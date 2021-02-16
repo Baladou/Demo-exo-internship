@@ -1,4 +1,4 @@
-package com.exo.demo.service;
+package com.exo.demo.service.impl;
 
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
@@ -7,6 +7,7 @@ import com.exo.demo.exception.UserExistsException;
 import com.exo.demo.exception.UserNotFoundException;
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
+import com.exo.demo.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public UserDto update(String username, UserDto userDto) throws UserNotFoundException,UserExistsException {
         User user = userDao.findByUsername(username);
         if(user == null) throw new UserNotFoundException("User not found!!");
-        user = new User();
+
 
         BeanUtils.copyProperties(userDto, user);
 

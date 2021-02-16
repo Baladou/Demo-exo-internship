@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class UserNotFoundException extends Exception {
+public class RessourceNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 871618588278915308L;
 
-	public UserNotFoundException(String message) {
+	public RessourceNotFoundException(String message) {
 		super(message);
 	}
 

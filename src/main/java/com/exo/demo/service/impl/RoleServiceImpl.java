@@ -1,15 +1,18 @@
-package com.exo.demo.service;
+package com.exo.demo.service.impl;
 
 import com.exo.demo.dao.RoleDao;
+import com.exo.demo.dto.UserDto;
 import com.exo.demo.model.Role;
+import com.exo.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 @Transactional
 @Service("roleService")
-public class RoleServiceImpl  implements RoleService{
+public class RoleServiceImpl  implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
@@ -17,7 +20,9 @@ public class RoleServiceImpl  implements RoleService{
 
     @Override
     public List<Role> getRoles() {
-        return null;
+        List<Role> roles = new ArrayList<>();
+        roleDao.findAll().iterator().forEachRemaining(role -> roles.add(role));
+        return roles;
     }
 
     @Override
