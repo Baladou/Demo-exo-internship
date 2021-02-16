@@ -4,7 +4,8 @@
 package com.exo.demo.controller;
 
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.UserNotFoundException;
+
+import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.model.Role;
 import com.exo.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,13 +38,13 @@ public class RoleController {
         return  roleService.getRoles();
     }
     @GetMapping(value="/{id}")
-    public Role getUser(@PathVariable long id) throws UserNotFoundException {
+    public Role getUser(@PathVariable long id) throws RessourceNotFoundException {
 
         return roleService.findOneRole(id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteRole(@PathVariable(value = "id") Long id) throws UserNotFoundException {
+    public void deleteRole(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
 
         roleService.delete(id);
 

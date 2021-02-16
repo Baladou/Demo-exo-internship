@@ -1,8 +1,7 @@
 package com.exo.demo.service;
 
 
-import com.exo.demo.exception.UserExistsException;
-import com.exo.demo.exception.UserNotFoundException;
+
 import com.exo.demo.model.Role;
 
 import java.util.List;

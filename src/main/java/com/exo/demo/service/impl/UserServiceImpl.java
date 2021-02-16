@@ -3,8 +3,9 @@ package com.exo.demo.service.impl;
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.UserExistsException;
-import com.exo.demo.exception.UserNotFoundException;
+import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RessourceNotFoundException;
+
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
 import com.exo.demo.service.UserService;
@@ -40,28 +41,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findOne(long id) throws UserNotFoundException {
+    public UserDto findOne(long id) throws RessourceNotFoundException {
         User user = userDao.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User record not found for the id: " + id));
+                .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
 
         return user.toUserDto();
     }
 
     @Override
-    public void delete(long id) throws UserNotFoundException {
+    public void delete(long id) throws RessourceNotFoundException {
         userDao.deleteById(id);
     }
 
     @Override
-    public UserDto update(String username, UserDto userDto) throws UserNotFoundException,UserExistsException {
+    public UserDto update(String username, UserDto userDto) throws RessourceExistsException,
+            RessourceNotFoundException{
         User user = userDao.findByUsername(username);
-        if(user == null) throw new UserNotFoundException("User not found!!");
+        if(user == null) throw new RessourceNotFoundException("User not found!!");
 
 
         BeanUtils.copyProperties(userDto, user);
 
         Role role= roleDao.findByName(userDto.getRole());
-        if(role == null) throw new UserExistsException("Role does not  Exist!!");
+        if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
         user.setRole(role);
         user.setModifiedDate(Calendar.getInstance().getTime());
 
@@ -73,19 +75,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) throws UserExistsException {
+    public UserDto createUser(UserDto userDto) throws RessourceExistsException {
         User user = userDao.findByUsername(userDto.getUsername());
-        if (user != null)  throw new UserExistsException("User name already exists!!");
+        if (user != null)  throw new RessourceExistsException("User name already exists!!");
 
         user = userDao.findByEmail(userDto.getEmail());
-        if (user != null)  throw new UserExistsException("Email Already Exists!!");
+        if (user != null)  throw new RessourceExistsException("Email Already Exists!!");
 
         user = new User();
 
         BeanUtils.copyProperties(userDto, user);
 
         Role role= roleDao.findByName(userDto.getRole());
-        if(role == null) throw new UserExistsException("Role does not  Exist!!");
+        if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
         user.setRole(role);
 
 

@@ -4,8 +4,9 @@
 package com.exo.demo.controller;
 
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.UserExistsException;
-import com.exo.demo.exception.UserNotFoundException;
+
+import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.RoleService;
 import com.exo.demo.service.UserService;
@@ -45,17 +46,17 @@ public class UserController {
 
 
     @GetMapping(value="/{id}")
-    public ApiResponse getUser(@PathVariable long id) throws UserNotFoundException {
+    public ApiResponse getUser(@PathVariable long id) throws RessourceNotFoundException {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.findOne(id));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) throws UserNotFoundException {
+    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name());
 
     }
     @PutMapping(value = "/{username}")
-    public ApiResponse update(@PathVariable(value = "username") String username,@RequestBody UserDto user) throws UserNotFoundException, UserExistsException {
+    public ApiResponse update(@PathVariable(value = "username") String username,@RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException {
 
      return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(),userService.update(username,user)) ;  }
 
