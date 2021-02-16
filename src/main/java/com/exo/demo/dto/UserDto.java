@@ -39,5 +39,12 @@ public class UserDto {
         this.role = role;
     }
 
-
+    public UserDto(Long userId, String firstName, String lastName, String username, String email, String role) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
 }

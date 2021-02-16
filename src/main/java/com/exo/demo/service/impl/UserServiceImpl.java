@@ -57,13 +57,20 @@ public class UserServiceImpl implements UserService {
     public UserDto update(String username, UserDto userDto) throws RessourceExistsException,
             RessourceNotFoundException{
         User user = userDao.findByUsername(username);
+        User Nuser = userDao.findByUsername(userDto.getUsername());
+        User Nuser2 = userDao.findByEmail(userDto.getUsername());
+        if ((Nuser != null  || Nuser2 != null) && Nuser!= user && Nuser2!=user)  throw new RessourceExistsException("Username or Email  already exist!!");
         if(user == null) throw new RessourceNotFoundException("User not found!!");
-
-        user.setFirstName(userDto.getFirstName());
+        if(!userDto.getFirstName().trim().isEmpty()) {
+        user.setFirstName(userDto.getFirstName());}
         user.setLastName(userDto.getLastName());
         user.setModifiedDate(Calendar.getInstance().getTime());
         user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
+        if( userDto.getUsername()!= null ||!userDto.getUsername().trim().isEmpty()) {
+        user.setUsername(userDto.getUsername());}
+        User supervisor=userDao.findByUsername(userDto.getSupervisor());
+        if(supervisor == null) throw new RessourceNotFoundException("Supervisor not found!!");
+        user.setSupervisor(supervisor);
         Role role= roleDao.findByName(userDto.getRole());
         if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
         user.setRole(role);
@@ -78,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) throws RessourceExistsException {
+        if(userDto.getUsername().trim().isEmpty()) throw new RessourceExistsException("You must add a username!!");
         User user = userDao.findByUsername(userDto.getUsername());
         if (user != null)  throw new RessourceExistsException("User name already exists!!");
 
@@ -91,7 +99,9 @@ public class UserServiceImpl implements UserService {
         Role role= roleDao.findByName(userDto.getRole());
         if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
         user.setRole(role);
-
+        User supervisor=userDao.findByUsername(userDto.getSupervisor());
+        if(supervisor == null) throw new RessourceExistsException("Supervisor not found!!");
+        user.setSupervisor(supervisor);
 
 
         user.setCreatedDate(Calendar.getInstance().getTime());

@@ -24,22 +24,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
-    @Column
-    @NonNull
+    @Column(nullable = false)
     private String firstName;
 
-    @Column
-    @NonNull
+    @Column(nullable = false)
     private String lastName;
 
-    @Column
-    @NonNull
+    @Column(nullable = false)
     private String username;
 
-    @Column
-    @NonNull
+
+    @Column(nullable = false)
     private String email;
-    @Column
+
+    @Column(nullable = false)
     private Date createdDate;
     @Column
     private Date modifiedDate;
@@ -49,7 +47,7 @@ public class User {
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name="supervisor_id")
+    @JoinColumn(name="supervisor_id",insertable = true, updatable = true)
     private User supervisor;
 
 
@@ -59,8 +57,14 @@ public class User {
 
 
     public UserDto toUserDto() {
-        UserDto userDto = new UserDto(this.userId,this.firstName,this.lastName,this.username,
-                this.email,this.role.getName(),this.supervisor.getUsername());
+        UserDto userDto=new UserDto();
+        if(this.supervisor!= null){
+         userDto = new UserDto(this.userId,this.firstName,this.lastName,this.username,
+                this.email,this.role.getName(),this.supervisor.getUsername());}
+        else{
+            userDto = new UserDto(this.userId,this.firstName,this.lastName,this.username,
+                    this.email,this.role.getName());
+        }
         return userDto;
     }
 
