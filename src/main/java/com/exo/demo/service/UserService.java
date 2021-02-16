@@ -12,7 +12,7 @@ public interface UserService {
 
     List<UserDto> getUsers();
     UserDto findOne(long id) throws RessourceNotFoundException;
-    void delete(long id) throws RessourceNotFoundException;
+    void delete(long id) ;
     UserDto update(String username,UserDto userDto) throws RessourceNotFoundException,RessourceExistsException;
     UserDto createUser(UserDto userDto) throws RessourceExistsException;
 

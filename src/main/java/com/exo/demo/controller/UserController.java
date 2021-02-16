@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
+    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id)  {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name());
 
     }

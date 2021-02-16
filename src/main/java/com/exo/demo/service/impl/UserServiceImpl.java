@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(long id) throws RessourceNotFoundException {
+    public void delete(long id)  {
         userDao.deleteById(id);
     }
 
@@ -59,16 +59,18 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findByUsername(username);
         if(user == null) throw new RessourceNotFoundException("User not found!!");
 
-
-        BeanUtils.copyProperties(userDto, user);
-
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setModifiedDate(Calendar.getInstance().getTime());
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
         Role role= roleDao.findByName(userDto.getRole());
         if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
         user.setRole(role);
-        user.setModifiedDate(Calendar.getInstance().getTime());
+
 
         userDao.save(user);
-
+        userDto.setUserId( userDao.save(user).getUserId());
         return userDto;
 
 
