@@ -13,6 +13,7 @@ import com.exo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 ;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +34,9 @@ public class UserController {
 
 
     @PostMapping
-    public ApiResponse createUser(@RequestBody UserDto user) throws Exception {
-        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.createUser(user));
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) throws Exception {
+
+        return  new ResponseEntity<UserDto>(userService.createUser(user), HttpStatus.CREATED);
     }
 
 
