@@ -50,7 +50,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version> <!-- Or whatever JUnit you're using. -->
+        </dependency>
 
     </dependencies>
 

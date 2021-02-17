@@ -36,7 +36,10 @@ public class Role {
     private List<User> users = new ArrayList<>();
 
 
-
+    /**
+     *
+     * @return
+     */
     public RoleDto toRoleDto() {
         RoleDto roledto = new RoleDto(this.id,this.name);
         roledto.setUsers(this.users.stream().map(user -> user.getUsername().toString()).collect(Collectors.toList()));
@@ -44,5 +47,56 @@ public class Role {
         //System.out.println(roledto.getUsers());
 
         return roledto;
+    }
+    /////////////Getters
+
+    /**
+     *
+     * @return
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<User> getUsers() {
+        return users;
+    }
+
+    ///////////Setters
+
+    /**
+     *
+     * @param id
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
+     *
+     * @param name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @param users
+     */
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
