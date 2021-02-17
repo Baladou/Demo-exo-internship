@@ -5,8 +5,10 @@ package com.exo.demo.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
+/**
+ * @author Baladou
+ *
+ */
 @Getter
 @Setter
 public class UserDto {
@@ -24,7 +26,15 @@ public class UserDto {
         super();
     }
 
-
+    /**
+     * @param userId
+     * @param firstName
+     * @param lastName
+     * @param username
+     * @param email
+     * @param role
+     * @param supervisor
+     */
 
     public UserDto(long userId, String firstName, String lastName, String username,  String email,
                    String role,String supervisor) {
@@ -38,7 +48,14 @@ public class UserDto {
         this.email = email;
         this.role = role;
     }
-
+    /**
+     * @param userId
+     * @param firstName
+     * @param lastName
+     * @param username
+     * @param email
+     * @param role
+     */
     public UserDto(Long userId, String firstName, String lastName, String username, String email, String role) {
         this.userId = userId;
         this.firstName = firstName;

@@ -13,7 +13,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+        * @author Baladou
+        *
+        */
 @Entity
 @Getter
 @Setter
@@ -49,11 +52,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name="supervisor_id",insertable = true, updatable = true)
     private User supervisor;
-
-
-
-
-
 
 
     public UserDto toUserDto() {

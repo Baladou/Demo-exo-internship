@@ -6,6 +6,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Baladou
+ *
+ */
 @Getter
 @Setter
 public class RoleDto {
@@ -17,6 +22,12 @@ public class RoleDto {
         super();
     }
 
+    /**
+     * @param id
+     * @param name
+
+     */
+
     public RoleDto(long id, String name) {
         super();
         this.id = id;
@@ -24,6 +35,11 @@ public class RoleDto {
 
     }
 
+    /**
+     * @param id
+     * @param name
+     * @param users
+     */
     public RoleDto(long id, String name, List<String> users) {
         this.id = id;
         this.name = name;
