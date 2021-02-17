@@ -1,0 +1,10 @@
+com.exo.demo
+com.exo.demo.controller
+com.exo.demo.dao
+com.exo.demo.dto
+com.exo.demo.exception
+com.exo.demo.exception.dto
+com.exo.demo.model
+com.exo.demo.response
+com.exo.demo.service
+com.exo.demo.service.impl
