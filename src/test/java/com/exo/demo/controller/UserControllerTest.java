@@ -54,14 +54,13 @@ class UserControllerTest {
             "   \"firstName\": \"Ahmed\",\n" +
             "\"lastName\": \"Ahmed\",\n" +
             "        \"email\": \"Ahmed@gmail.com\",\n" +
-            "        \"role\": \"Developper\",\n" +
-            "         \"supervisor\": \"Ali\"\n" +
+            "        \"role\": \"Developper\" \n" +
             "}";
 
     @Test
     void createUser() throws Exception {
         UserDto NewuserObj = new UserDto(20L,"Ahmed","Ahmed","Ahmed",
-                "Ahmed@gmail.com","Developper","Ali");
+                "Ahmed@gmail.com","Developper");
         Mockito.when(
                 userService.createUser(Mockito.any(UserDto.class))).thenReturn(NewuserObj);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
@@ -89,13 +88,34 @@ class UserControllerTest {
 
     @Test
     void listUsers() throws Exception {
-      /*  List<UserDto> allusers = Collections.singletonList(user);
-        given(userController.listUsers()).willReturn(new ApiResponse(HttpStatus.OK,"Sucees" , allusers));
+        List<UserDto> allusers = Collections.singletonList(user);
+        Mockito.when(
+                userService.getUsers()).thenReturn(allusers);
 
-        mvc.perform(get("/api/users")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    */
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
+                "/api/users/").accept(
+                MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+
+        String response = result.getResponse().getContentAsString();
+        //long id = JsonPath.parse(response).read("result.userId");
+        JSONObject json = new JSONObject(response);
+
+        System.out.println("this is the result "+json.getString("result"));
+        String expected = "[{\n" +
+                "   \"userId\": 14,\n" +
+                "   \"firstName\": \"adnan\",\n" +
+                "   \"username\": \"adnan\",\n" +
+                "\"lastName\": \"adnan\",\n" +
+                "        \"email\": \"adnan@gmail.com\",\n" +
+                "        \"role\": \"Developper\",\n" +
+                "         \"supervisor\": \"Ali\"\n" +
+                "}]";
+
+
+        JSONAssert.assertEquals(expected, json.getString("result"), true);
+
     }
 
 

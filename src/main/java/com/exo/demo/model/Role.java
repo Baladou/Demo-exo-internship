@@ -42,9 +42,8 @@ public class Role {
      */
     public RoleDto toRoleDto() {
         RoleDto roledto = new RoleDto(this.id,this.name);
-        roledto.setUsers(this.users.stream().map(user -> user.getUsername().toString()).collect(Collectors.toList()));
-
-        //System.out.println(roledto.getUsers());
+        roledto.setUsers(this.users.stream().map(user ->
+                user.getUsername().toString()).collect(Collectors.toList()));
 
         return roledto;
     }
