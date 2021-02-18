@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) throws RessourceExistsException {
-        if(userDto.getUsername().trim().isEmpty()) throw new RessourceExistsException("You must add a username!!");
+        if(userDto.getUsername().trim().isEmpty() || userDto.getEmail().trim().isEmpty()) throw new RessourceExistsException("You must add a username and an email!!");
         User user = userDao.findByUsername(userDto.getUsername());
         if (user != null)  throw new RessourceExistsException("User name already exists!!");
 

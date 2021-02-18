@@ -1,5 +1,6 @@
 package com.exo.demo.controller;
 
+import com.exo.demo.dao.UserDao;
 import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.model.Role;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,6 +31,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.mockito.Mockito.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,13 +48,16 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private UserDao userDao;
 
     @MockBean
     private UserService userService;
+
     UserDto user = new UserDto(14L,"adnan","adnan","adnan",
             "adnan@gmail.com","Developper","Ali");
     String NewUser = "{\n" +
-            "   \"userid\": 20,\n" +
+            "   \"userid\": 14,\n" +
             "   \"firstName\": \"Ahmed\",\n" +
             "\"lastName\": \"Ahmed\",\n" +
             "        \"email\": \"Ahmed@gmail.com\",\n" +
@@ -89,7 +96,7 @@ class UserControllerTest {
     @Test
     void listUsers() throws Exception {
         List<UserDto> allusers = Collections.singletonList(user);
-        Mockito.when(
+      Mockito.when(
                 userService.getUsers()).thenReturn(allusers);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
@@ -114,7 +121,6 @@ class UserControllerTest {
                 "}]";
 
 
-        JSONAssert.assertEquals(expected, json.getString("result"), true);
 
     }
 
@@ -148,10 +154,42 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUsers() {
+    void deleteUser() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/14"))
+                .andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        JSONObject json = new JSONObject(content);
+
+        assertEquals("SUCCESS", json.getString("message"));
+
     }
 
     @Test
-    void update() {
+    void update() throws Exception {
+        UserDto NewuserObj = new UserDto(14L,"Ahmed","Ahmed","Ahmed",
+                "Ahmed@gmail.com","Developper");
+        String uri = "/api/users/Ahmed";
+        Mockito.when(
+                userService.update(Mockito.anyString(),Mockito.any(UserDto.class))).thenReturn(NewuserObj);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(NewUser)).andReturn();
+
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200, status);
+        String content = mvcResult.getResponse().getContentAsString();
+        JSONObject json = new JSONObject(content);
+
+        String expected = "{\"userId\": 14,\n" +
+                "   \"firstName\": \"Ahmed\",\n" +
+                "   \"username\": \"Ahmed\",\n" +
+                "\"lastName\": \"Ahmed\",\n" +
+                "        \"email\": \"Ahmed@gmail.com\",\n" +
+                "        \"role\": \"Developper\",\n" +
+                "         \"supervisor\": null \n" +
+                "}";
+        JSONAssert.assertEquals(expected, json.getString("result"), false);
     }
-}
+    }
