@@ -7,14 +7,13 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @author Baladou
- *
  */
 
 @Repository
 public interface RoleDao extends JpaRepository<Role, Long> {
- /**
-  * @param name
-  */
- Role findByName(String name);
+    /**
+     * @param name
+     */
+    Role findByName(String name);
 
 }

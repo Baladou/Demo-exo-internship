@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * @author Baladou
- *
  */
 
 @Repository
@@ -26,14 +25,12 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
     /**
-     *
      * @param role
      * @return
      */
     List<User> findByRoleContaining(Role role);
 
     /**
-     *
      * @param firstname
      * @return
      */

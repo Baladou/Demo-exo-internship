@@ -3,7 +3,6 @@ package com.exo.demo.dto;
 
 /**
  * @author Baladou
- *
  */
 
 public class UserDto {
@@ -22,7 +21,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param userId
      * @param firstName
      * @param lastName
@@ -31,18 +29,19 @@ public class UserDto {
      * @param role
      * @param supervisor
      */
-    public UserDto(long userId, String firstName, String lastName, String username,  String email,
-                   String role,String supervisor) {
+    public UserDto(long userId, String firstName, String lastName, String username, String email,
+                   String role, String supervisor) {
         super();
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
-        this.supervisor=supervisor;
+        this.supervisor = supervisor;
 
         this.email = email;
         this.role = role;
     }
+
     /**
      * @param userId
      * @param firstName
@@ -62,7 +61,6 @@ public class UserDto {
     /////////////Getters
 
     /**
-     *
      * @return
      */
     public Long getUserId() {
@@ -70,7 +68,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
 
@@ -79,7 +76,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
     public String getLastName() {
@@ -87,7 +83,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
     public String getUsername() {
@@ -95,7 +90,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
     public String getEmail() {
@@ -103,7 +97,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
     public String getRole() {
@@ -111,7 +104,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @return
      */
     public String getSupervisor() {
@@ -120,7 +112,6 @@ public class UserDto {
 /////////////////Setters
 
     /**
-     *
      * @param userId
      */
     public void setUserId(Long userId) {
@@ -128,7 +119,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -136,7 +126,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param lastName
      */
     public void setLastName(String lastName) {
@@ -144,7 +133,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param username
      */
     public void setUsername(String username) {
@@ -152,7 +140,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param email
      */
     public void setEmail(String email) {
@@ -160,7 +147,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param role
      */
     public void setRole(String role) {
@@ -168,7 +154,6 @@ public class UserDto {
     }
 
     /**
-     *
      * @param supervisor
      */
     public void setSupervisor(String supervisor) {

@@ -1,20 +1,14 @@
 package com.exo.demo.model;
 
 
-
 import com.exo.demo.dto.UserDto;
 
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 /**
-        * @author Baladou
-        *
-        */
+ * @author Baladou
+ */
 @Entity
 
 @Table(name = "User")
@@ -43,34 +37,32 @@ public class User {
     private Date modifiedDate;
 
     @ManyToOne()
-    @JoinColumn(name="role_id", referencedColumnName = "id", insertable = true, updatable = true)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = true, updatable = true)
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name="supervisor_id",insertable = true, updatable = true)
+    @JoinColumn(name = "supervisor_id", insertable = true, updatable = true)
     private User supervisor;
 
     /**
-     *
      * @return
      */
 
     public UserDto toUserDto() {
-        UserDto userDto=new UserDto();
-        if(this.supervisor!= null){
-         userDto = new UserDto(this.userId,this.firstName,this.lastName,this.username,
-                this.email,this.role.getName(),this.supervisor.getUsername());}
-        else{
-            userDto = new UserDto(this.userId,this.firstName,this.lastName,this.username,
-                    this.email,this.role.getName());
+        UserDto userDto = new UserDto();
+        if (this.supervisor != null) {
+            userDto = new UserDto(this.userId, this.firstName, this.lastName, this.username,
+                    this.email, this.role.getName(), this.supervisor.getUsername());
+        } else {
+            userDto = new UserDto(this.userId, this.firstName, this.lastName, this.username,
+                    this.email, this.role.getName());
         }
         return userDto;
     }
 
- //////////Getters
+    //////////Getters
 
     /**
-     *
      * @return
      */
     public Long getUserId() {
@@ -78,7 +70,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public String getFirstName() {
@@ -86,7 +77,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public String getLastName() {
@@ -94,7 +84,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public String getUsername() {
@@ -102,7 +91,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public String getEmail() {
@@ -110,7 +98,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public Date getCreatedDate() {
@@ -118,7 +105,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public Date getModifiedDate() {
@@ -126,7 +112,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public Role getRole() {
@@ -134,7 +119,6 @@ public class User {
     }
 
     /**
-     *
      * @return
      */
     public User getSupervisor() {
@@ -144,7 +128,6 @@ public class User {
     ///////////Setters
 
     /**
-     *
      * @param userId
      */
     public void setUserId(Long userId) {
@@ -152,7 +135,6 @@ public class User {
     }
 
     /**
-     *
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -160,7 +142,6 @@ public class User {
     }
 
     /**
-     *
      * @param lastName
      */
     public void setLastName(String lastName) {
@@ -168,7 +149,6 @@ public class User {
     }
 
     /**
-     *
      * @param username
      */
     public void setUsername(String username) {
@@ -176,7 +156,6 @@ public class User {
     }
 
     /**
-     *
      * @param email
      */
     public void setEmail(String email) {
@@ -184,7 +163,6 @@ public class User {
     }
 
     /**
-     *
      * @param createdDate
      */
     public void setCreatedDate(Date createdDate) {
@@ -192,7 +170,6 @@ public class User {
     }
 
     /**
-     *
      * @param modifiedDate
      */
     public void setModifiedDate(Date modifiedDate) {
@@ -200,7 +177,6 @@ public class User {
     }
 
     /**
-     *
      * @param role
      */
     public void setRole(Role role) {
@@ -208,7 +184,6 @@ public class User {
     }
 
     /**
-     *
      * @param supervisor
      */
     public void setSupervisor(User supervisor) {

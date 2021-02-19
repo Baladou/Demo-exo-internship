@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 /**
  * @author Baladou
- *
  */
 
 
@@ -32,16 +31,15 @@ public class Role {
     @NonNull
     private String name;
 
-    @OneToMany(targetEntity=User.class, mappedBy="role",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = User.class, mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();
 
 
     /**
-     *
      * @return
      */
     public RoleDto toRoleDto() {
-        RoleDto roledto = new RoleDto(this.id,this.name);
+        RoleDto roledto = new RoleDto(this.id, this.name);
         roledto.setUsers(this.users.stream().map(user ->
                 user.getUsername().toString()).collect(Collectors.toList()));
 
@@ -50,7 +48,6 @@ public class Role {
     /////////////Getters
 
     /**
-     *
      * @return
      */
     public Long getId() {
@@ -58,7 +55,6 @@ public class Role {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -66,7 +62,6 @@ public class Role {
     }
 
     /**
-     *
      * @return
      */
     public List<User> getUsers() {
@@ -76,7 +71,6 @@ public class Role {
     ///////////Setters
 
     /**
-     *
      * @param id
      */
     public void setId(Long id) {
@@ -84,7 +78,6 @@ public class Role {
     }
 
     /**
-     *
      * @param name
      */
     public void setName(String name) {
@@ -92,7 +85,6 @@ public class Role {
     }
 
     /**
-     *
      * @param users
      */
     public void setUsers(List<User> users) {

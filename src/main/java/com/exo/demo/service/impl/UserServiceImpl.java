@@ -21,9 +21,9 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 /**
  * @author Baladou
- *
  */
 @Transactional
 @Service("userService")
@@ -34,9 +34,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleDao roleDao;
-
-
-
 
 
     @Override
@@ -56,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsersByRole(String roleName) {
         List<UserDto> userDto = new ArrayList<>();
-        Role role= roleDao.findByName(roleName);
+        Role role = roleDao.findByName(roleName);
         userDao.findByRoleContaining(role).iterator().forEachRemaining(user -> userDto.add(user.toUserDto()));
         return userDto;
     }
@@ -77,48 +74,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(String username, UserDto userDto) throws RessourceExistsException,
-            RessourceNotFoundException{
-                  //trouver l'utilisateur pour le mettre à jour
+            RessourceNotFoundException {
+        //trouver l'utilisateur pour le mettre à jour
         User user = userDao.findByUsername(username);
 
         ////tester s'il existe un autre utlisateur avec le meme username ou le meme email
         User Nuser = userDao.findByUsername(userDto.getUsername());
         User Nuser2 = userDao.findByEmail(userDto.getUsername());
-        if ((Nuser != null  || Nuser2 != null) && Nuser!= user && Nuser2!=user)
+        if ((Nuser != null || Nuser2 != null) && Nuser != user && Nuser2 != user)
             throw new RessourceExistsException("Username or Email  already exist!!");
 
         //////////tester si l'utilisateur demandé existe
-        if(user == null) throw new RessourceNotFoundException("User not found!!");
+        if (user == null) throw new RessourceNotFoundException("User not found!!");
 
         /////////////tester si les champs insers si  ne sont t pas vides pour les mettre à jour
 
-        if(userDto.getUsername() != null && !userDto.getUsername().trim().isEmpty()){
+        if (userDto.getUsername() != null && !userDto.getUsername().trim().isEmpty()) {
             user.setUsername(userDto.getUsername());
         }
-        if( userDto.getEmail() !=null && !userDto.getEmail().trim().isEmpty()){
+        if (userDto.getEmail() != null && !userDto.getEmail().trim().isEmpty()) {
             user.setEmail(userDto.getEmail());
         }
-        if(userDto.getFirstName() != null ) {
+        if (userDto.getFirstName() != null) {
             user.setFirstName(userDto.getFirstName());
         }
 
-        if(userDto.getLastName()!=null) {
+        if (userDto.getLastName() != null) {
             user.setLastName(userDto.getLastName());
-       }
+        }
 
         user.setModifiedDate(Calendar.getInstance().getTime());
         /////////////cherecher le superviseur
-        User supervisor=userDao.findByUsername(userDto.getSupervisor());
-        if(supervisor != null) {
-        user.setSupervisor(supervisor);}
+        User supervisor = userDao.findByUsername(userDto.getSupervisor());
+        if (supervisor != null) {
+            user.setSupervisor(supervisor);
+        }
         //cherecher le role
-        Role role= roleDao.findByName(userDto.getRole());
-        if(role !=null) {
-        user.setRole(role);}
+        Role role = roleDao.findByName(userDto.getRole());
+        if (role != null) {
+            user.setRole(role);
+        }
 
-                 /////////enregistrere les modifications
+        /////////enregistrere les modifications
         userDao.save(user);
-        userDto.setUserId( userDao.save(user).getUserId());
+        userDto.setUserId(userDao.save(user).getUserId());
         return user.toUserDto();
 
 
@@ -128,39 +127,41 @@ public class UserServiceImpl implements UserService {
     public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException {
 
 ///////////// tester si username ou l'email sont vides
-        if(userDto.getUsername() == null  || userDto.getEmail() == null)
+        if (userDto.getUsername() == null || userDto.getEmail() == null)
             throw new NullException("Username and email must be inserted!!");
 
         /////////////Tester si username ou l'email sont vides
-        if(userDto.getUsername().trim().isEmpty()  || userDto.getEmail().trim().isEmpty())
+        if (userDto.getUsername().trim().isEmpty() || userDto.getEmail().trim().isEmpty())
             throw new RessourceExistsException("You must add a username and an email!!");
 
         ///////tester si username existe déja
         User user = userDao.findByUsername(userDto.getUsername());
-        if (user != null)  throw new RessourceExistsException("Username Already Exists!!");
+        if (user != null) throw new RessourceExistsException("Username Already Exists!!");
 
 
         ///////tester si l'email existe déja
         user = userDao.findByEmail(userDto.getEmail());
-        if (user != null)  throw new RessourceExistsException("Email Already Exists!!");
+        if (user != null) throw new RessourceExistsException("Email Already Exists!!");
 
         ///////////// creér le nouveau user
         user = new User();
 
         BeanUtils.copyProperties(userDto, user);
-                    //// trouver le role affecté à l'utilisateur
-        Role role= roleDao.findByName(userDto.getRole());
-        if(role == null) throw new RessourceExistsException("You must insert the role!!");
+        //// trouver le role affecté à l'utilisateur
+        Role role = roleDao.findByName(userDto.getRole());
+        if (role == null) throw new RessourceExistsException("You must insert the role!!");
         user.setRole(role);
-                  ///////// trouver le superviceur affecté à l'utilisateur
-        User supervisor=userDao.findByUsername(userDto.getSupervisor());
-        if(supervisor == null) throw new RessourceExistsException("You must insert the supervisor !!");
+        ///////// trouver le superviceur affecté à l'utilisateur
+        User supervisor = userDao.findByUsername(userDto.getSupervisor());
+        if (supervisor == null && !userDto.getRole().toLowerCase().equals("directeur")) {
+            throw new RessourceExistsException("You must insert the supervisor !!");
+        }
         user.setSupervisor(supervisor);
 
 
         user.setCreatedDate(Calendar.getInstance().getTime());
         user.setModifiedDate(Calendar.getInstance().getTime());
-                   ///////////enregistrer l'utilisateur dans la BD
+        ///////////enregistrer l'utilisateur dans la BD
         User user1 = userDao.save(user);
         userDto.setUserId(user1.getUserId());
         return userDto;

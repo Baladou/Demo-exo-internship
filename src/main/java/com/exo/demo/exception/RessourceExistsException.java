@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class RessourceExistsException extends Exception {
 
-	private static final long serialVersionUID = 871618588278915308L;
+    private static final long serialVersionUID = 871618588278915308L;
 
-	public RessourceExistsException(String message) {
-		super(message);
-	}
+    public RessourceExistsException(String message) {
+        super(message);
+    }
 
 }

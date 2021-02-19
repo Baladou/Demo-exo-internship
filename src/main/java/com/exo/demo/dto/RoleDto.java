@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * @author Baladou
- *
  */
 
 public class RoleDto {
@@ -20,7 +19,6 @@ public class RoleDto {
     /**
      * @param id
      * @param name
-
      */
 
     public RoleDto(long id, String name) {
@@ -44,7 +42,6 @@ public class RoleDto {
     ////Getters
 
     /**
-     *
      * @return
      */
     public long getId() {
@@ -52,7 +49,6 @@ public class RoleDto {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -60,7 +56,6 @@ public class RoleDto {
     }
 
     /**
-     *
      * @return
      */
     public List<String> getUsers() {
@@ -69,7 +64,6 @@ public class RoleDto {
 ///////////////////Setters
 
     /**
-     *
      * @param id
      */
     public void setId(long id) {
@@ -77,7 +71,6 @@ public class RoleDto {
     }
 
     /**
-     *
      * @param name
      */
     public void setName(String name) {
@@ -85,7 +78,6 @@ public class RoleDto {
     }
 
     /**
-     *
      * @param users
      */
     public void setUsers(List<String> users) {
