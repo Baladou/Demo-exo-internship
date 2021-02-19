@@ -65,9 +65,10 @@ public class UserController {
 
 
     @GetMapping("/search")
-    public ApiResponse listUsersByRole(@RequestParam(value = "firstName" ) String firstname) {
+    public ApiResponse listUsersByFirstName(@RequestParam(value = "firstName" ) String firstname) {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.getUsersByFirstNameLike(firstname));
     }
+
 
 
 }

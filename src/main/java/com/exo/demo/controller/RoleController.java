@@ -46,6 +46,11 @@ public class RoleController {
 
         return roleService.findOneRole(id);
     }
+    @GetMapping(value="/{id}/users")
+    public ApiResponse getUsersRole(@PathVariable long id) throws RessourceNotFoundException {
+
+        return new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(),roleService.getUsersRole(id));
+    }
 
     @DeleteMapping(value = "/{id}")
     public void deleteRole(@PathVariable(value = "id") Long id) throws RessourceNotFoundException  {

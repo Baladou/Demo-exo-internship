@@ -2,6 +2,7 @@ package com.exo.demo.service.impl;
 
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dto.RoleDto;
+import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.model.Role;
@@ -30,6 +31,15 @@ public class RoleServiceImpl  implements RoleService {
         List<RoleDto> roles = new ArrayList<>();
         roleDao.findAll().iterator().forEachRemaining(role -> roles.add(role.toRoleDto()));
         return roles;
+    }
+
+    @Override
+    public List<UserDto> getUsersRole(long id) throws RessourceNotFoundException {
+        List<UserDto> usersDto = new ArrayList<>();
+        Role role =roleDao.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Role  not found for the id: " + id));
+        role.getUsers().iterator().forEachRemaining(user -> usersDto.add(user.toUserDto()));
+        return usersDto;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.model.Role;
 
 
 import java.util.List;
@@ -25,11 +26,19 @@ public interface UserService {
      * @return
      */
     List<UserDto> getUsersByFirstNameLike(String firstname);
+
+    /**
+     *
+     * @param roleid
+     * @return
+     */
+    List<UserDto> getUsersByRole(String roleid);
     /**
      * @param id
      * @return
      * @throws RessourceNotFoundException
      */
+
     UserDto findOne(long id) throws RessourceNotFoundException;
 
     /**

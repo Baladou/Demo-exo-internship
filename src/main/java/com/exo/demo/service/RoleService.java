@@ -3,6 +3,7 @@ package com.exo.demo.service;
 
 
 import com.exo.demo.dto.RoleDto;
+import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.model.Role;
@@ -21,10 +22,19 @@ public interface RoleService {
     List<RoleDto> getRoles();
 
     /**
+     *
+     * @param id
+     * @return
+     */
+    List<UserDto> getUsersRole(long id) throws RessourceNotFoundException;
+
+    /**
      * @param id
      * @return
      * @throws RessourceNotFoundException
      */
+
+
     RoleDto findOneRole(long id) throws RessourceNotFoundException;
     /**
      * @param id

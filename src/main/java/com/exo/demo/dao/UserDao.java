@@ -1,5 +1,6 @@
 package com.exo.demo.dao;
 
+import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -26,10 +27,16 @@ public interface UserDao extends JpaRepository<User, Long> {
 
     /**
      *
+     * @param role
+     * @return
+     */
+    List<User> findByRoleContaining(Role role);
+
+    /**
+     *
      * @param firstname
      * @return
      */
-    List<User> findByFirstNameLike(String firstname);
     List<User> findByFirstNameContaining(String firstname);
 
 }

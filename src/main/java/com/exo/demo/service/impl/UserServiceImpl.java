@@ -54,6 +54,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> getUsersByRole(String roleName) {
+        List<UserDto> userDto = new ArrayList<>();
+        Role role= roleDao.findByName(roleName);
+        userDao.findByRoleContaining(role).iterator().forEachRemaining(user -> userDto.add(user.toUserDto()));
+        return userDto;
+    }
+
+    @Override
     public UserDto findOne(long id) throws RessourceNotFoundException {
         User user = userDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
