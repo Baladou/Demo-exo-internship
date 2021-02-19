@@ -150,11 +150,11 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(userDto, user);
                     //// trouver le role affecté à l'utilisateur
         Role role= roleDao.findByName(userDto.getRole());
-        if(role == null) throw new RessourceExistsException("Role does not  Exist!!");
+        if(role == null) throw new RessourceExistsException("You must insert the role!!");
         user.setRole(role);
                   ///////// trouver le superviceur affecté à l'utilisateur
         User supervisor=userDao.findByUsername(userDto.getSupervisor());
-        if(supervisor == null) throw new RessourceExistsException("Supervisor not found!!");
+        if(supervisor == null) throw new RessourceExistsException("You must insert the supervisor !!");
         user.setSupervisor(supervisor);
 
 
