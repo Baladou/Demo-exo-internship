@@ -4,6 +4,8 @@ import com.exo.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Baladou
  *
@@ -21,4 +23,13 @@ public interface UserDao extends JpaRepository<User, Long> {
      * @param email
      */
     User findByEmail(String email);
+
+    /**
+     *
+     * @param firstname
+     * @return
+     */
+    List<User> findByFirstNameLike(String firstname);
+    List<User> findByFirstNameContaining(String firstname);
+
 }

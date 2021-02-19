@@ -57,7 +57,7 @@ class UserControllerTest {
     UserDto user = new UserDto(14L,"adnan","adnan","adnan",
             "adnan@gmail.com","Developper","Ali");
     String NewUser = "{\n" +
-            "   \"userid\": 14,\n" +
+            "   \"Username\": \"Ahmed\",\n" +
             "   \"firstName\": \"Ahmed\",\n" +
             "\"lastName\": \"Ahmed\",\n" +
             "        \"email\": \"Ahmed@gmail.com\",\n" +
@@ -68,7 +68,7 @@ class UserControllerTest {
     void createUser() throws Exception {
         UserDto NewuserObj = new UserDto(20L,"Ahmed","Ahmed","Ahmed",
                 "Ahmed@gmail.com","Developper");
-        Mockito.when(
+       Mockito.when(
                 userService.createUser(Mockito.any(UserDto.class))).thenReturn(NewuserObj);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/api/users")
@@ -77,10 +77,9 @@ class UserControllerTest {
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
+        System.out.println(response.getContentAsString());
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-      // System.out.println(response.getHeader(HttpHeaders.ACCEPT_LANGUAGE));
-        /*assertEquals("http://localhost/users/20",
-                response.getHeader(HttpHeaders.LOCATION));*/
+
 
 
 

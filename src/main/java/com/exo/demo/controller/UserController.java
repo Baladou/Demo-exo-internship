@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id)  {
+    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
         userService.delete(id);
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name());
 
@@ -64,8 +64,10 @@ public class UserController {
      return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(),userService.update(username,user)) ;  }
 
 
-
-
+    @GetMapping("/search")
+    public ApiResponse listUsersByRole(@RequestParam(value = "firstName" ) String firstname) {
+        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.getUsersByFirstNameLike(firstname));
+    }
 
 
 }

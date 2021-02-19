@@ -6,7 +6,7 @@ package com.exo.demo.exception.dto;
 import java.util.Date;
 
 /**
- * @author Sudarshan
+ * @author Baladou
  *
  */
 public class ExceptionResponse {

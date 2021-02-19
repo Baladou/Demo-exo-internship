@@ -1,6 +1,7 @@
 package com.exo.demo.service;
 
 import com.exo.demo.dto.UserDto;
+import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;
 
@@ -19,6 +20,12 @@ public interface UserService {
     List<UserDto> getUsers();
 
     /**
+     *
+     * @param firstname
+     * @return
+     */
+    List<UserDto> getUsersByFirstNameLike(String firstname);
+    /**
      * @param id
      * @return
      * @throws RessourceNotFoundException
@@ -28,7 +35,7 @@ public interface UserService {
     /**
      * @param id
      */
-    void delete(long id) ;
+    void delete(long id) throws RessourceNotFoundException;
     /**
      * @param username
      * @param userDto
@@ -43,6 +50,6 @@ public interface UserService {
      * @return
      * @throws RessourceExistsException
      */
-    UserDto createUser(UserDto userDto) throws RessourceExistsException;
+    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException;
 
 }
