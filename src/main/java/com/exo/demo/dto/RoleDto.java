@@ -10,7 +10,7 @@ import java.util.List;
 public class RoleDto {
     private long id;
     private String name;
-    private List<String> users = new ArrayList<>();
+
 
     public RoleDto() {
         super();
@@ -21,22 +21,15 @@ public class RoleDto {
      * @param name
      */
 
-    public RoleDto(long id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-
-    }
 
     /**
      * @param id
      * @param name
-     * @param users
      */
-    public RoleDto(long id, String name, List<String> users) {
+    public RoleDto(long id, String name) {
         this.id = id;
         this.name = name;
-        this.users = users;
+
     }
 
     ////Getters
@@ -55,12 +48,7 @@ public class RoleDto {
         return name;
     }
 
-    /**
-     * @return
-     */
-    public List<String> getUsers() {
-        return users;
-    }
+
 ///////////////////Setters
 
     /**
@@ -77,10 +65,4 @@ public class RoleDto {
         this.name = name;
     }
 
-    /**
-     * @param users
-     */
-    public void setUsers(List<String> users) {
-        this.users = users;
-    }
 }

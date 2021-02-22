@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) throws Exception {
-
+        System.out.println("user");
         return new ResponseEntity<UserDto>(userService.createUser(user), HttpStatus.CREATED);
     }
 

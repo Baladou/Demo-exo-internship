@@ -1,6 +1,12 @@
 package com.exo.demo.dto;
 
 
+import com.exo.demo.model.Role;
+import com.exo.demo.model.User;
+
+
+import java.util.Date;
+
 /**
  * @author Baladou
  */
@@ -11,10 +17,11 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String username;
-
     private String email;
-    private String role;
-    private String supervisor;
+    private RoleDto role;
+    private UserDto supervisor;
+    private Date createdDate;
+    private Date modifiedDate;
 
     public UserDto() {
         super();
@@ -30,7 +37,7 @@ public class UserDto {
      * @param supervisor
      */
     public UserDto(long userId, String firstName, String lastName, String username, String email,
-                   String role, String supervisor) {
+                   RoleDto role, UserDto supervisor) {
         super();
         this.userId = userId;
         this.firstName = firstName;
@@ -42,6 +49,14 @@ public class UserDto {
         this.role = role;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
+
     /**
      * @param userId
      * @param firstName
@@ -50,7 +65,7 @@ public class UserDto {
      * @param email
      * @param role
      */
-    public UserDto(Long userId, String firstName, String lastName, String username, String email, String role) {
+    public UserDto(Long userId, String firstName, String lastName, String username, String email, RoleDto role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,14 +114,14 @@ public class UserDto {
     /**
      * @return
      */
-    public String getRole() {
+    public RoleDto getRole() {
         return role;
     }
 
     /**
      * @return
      */
-    public String getSupervisor() {
+    public UserDto getSupervisor() {
         return supervisor;
     }
 /////////////////Setters
@@ -149,14 +164,23 @@ public class UserDto {
     /**
      * @param role
      */
-    public void setRole(String role) {
+    public void setRole(RoleDto role) {
         this.role = role;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
     }
 
     /**
      * @param supervisor
      */
-    public void setSupervisor(String supervisor) {
+    public void setSupervisor(UserDto supervisor) {
         this.supervisor = supervisor;
     }
 }
+

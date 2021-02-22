@@ -2,9 +2,13 @@ package com.exo.demo.service.impl;
 
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dto.RoleDto;
+
 import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
+
+import com.exo.demo.mapper.RoleMapper;
+import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
 import com.exo.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +26,15 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleDao roleDao;
 
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public List<RoleDto> getRoles() {
         List<RoleDto> roles = new ArrayList<>();
-        roleDao.findAll().iterator().forEachRemaining(role -> roles.add(role.toRoleDto()));
+        roleDao.findAll().iterator().forEachRemaining(role -> roles.add(roleMapper.toRoleDto(role)));
         return roles;
     }
 
@@ -35,7 +43,7 @@ public class RoleServiceImpl implements RoleService {
         List<UserDto> usersDto = new ArrayList<>();
         Role role = roleDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Role  not found for the id: " + id));
-        role.getUsers().iterator().forEachRemaining(user -> usersDto.add(user.toUserDto()));
+        role.getUsers().iterator().forEachRemaining(user -> usersDto.add(userMapper.toUserDto(user)));
         return usersDto;
     }
 
@@ -44,15 +52,16 @@ public class RoleServiceImpl implements RoleService {
 
         Role role = roleDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Role  not found for the id: " + id));
-        return role.toRoleDto();
+        return roleMapper.toRoleDto(role);
+
     }
 
     @Override
     public void delete(long id) throws RessourceNotFoundException {
-        RoleDto role = findOneRole(id);
+      /*  RoleDto role = findOneRole(id);
         if (role.getUsers().size() != 0)
             throw new RessourceNotFoundException(" You can not delete this role because it is used by other ressources!!");
-        roleDao.deleteById(id);
+        roleDao.deleteById(id);*/
     }
 
     @Override
@@ -62,7 +71,7 @@ public class RoleServiceImpl implements RoleService {
         if (roleDao.findByName(roledto.getName()) != null)
             throw new RessourceExistsException("The role inserted already exists in the DB");
         role.setName(roledto.getName());
-        return role.toRoleDto();
+        return roleMapper.toRoleDto(role);
 
 
     }

@@ -2,7 +2,7 @@ package com.exo.demo.model;
 
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dto.RoleDto;
-import com.exo.demo.dto.UserDto;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -34,17 +34,24 @@ public class Role {
     @OneToMany(targetEntity = User.class, mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();
 
+    public Role() {
+    }
+
+    public Role(@NonNull String name, List<User> users) {
+        this.name = name;
+        this.users = users;
+    }
 
     /**
      * @return
      */
-    public RoleDto toRoleDto() {
+   /* public RoleDto toRoleDto() {
         RoleDto roledto = new RoleDto(this.id, this.name);
         roledto.setUsers(this.users.stream().map(user ->
                 user.getUsername().toString()).collect(Collectors.toList()));
 
         return roledto;
-    }
+    }*/
     /////////////Getters
 
     /**
