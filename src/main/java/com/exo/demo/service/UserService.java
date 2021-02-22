@@ -1,6 +1,7 @@
 package com.exo.demo.service;
 
 
+import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;

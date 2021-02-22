@@ -4,8 +4,6 @@ package com.exo.demo.dto;
 import com.exo.demo.model.User;
 
 import javax.management.relation.Role;
-import javax.persistence.Column;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -50,6 +48,13 @@ public class UserDto {
         this.role = role;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public Date getModifiedDate() {
+        return modifiedDate;
+    }
 
     /**
      * @param userId
@@ -162,6 +167,14 @@ public class UserDto {
         this.role = role;
     }
 
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setModifiedDate(Date modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
     /**
      * @param supervisor
      */
@@ -169,3 +182,4 @@ public class UserDto {
         this.supervisor = supervisor;
     }
 }
+

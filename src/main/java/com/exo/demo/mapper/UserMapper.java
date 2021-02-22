@@ -15,9 +15,9 @@ import javax.persistence.Converter;
 public interface UserMapper {
 
 
-    UserDto toUser(User user);
+    UserDto toUserDto(User user);
 
-    User toUserDto(UserDto user);
+    User toUser(UserDto user);
 
 
 }
