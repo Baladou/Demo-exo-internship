@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("api/roles")
 public class RoleController {
 
-
+/*
     @Autowired
     private RoleService roleService;
 
@@ -63,5 +63,5 @@ public class RoleController {
         return new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), roleService.update(id, roledto));
     }
 
-
+*/
 }

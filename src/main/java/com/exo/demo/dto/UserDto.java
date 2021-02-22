@@ -1,6 +1,13 @@
 package com.exo.demo.dto;
 
 
+import com.exo.demo.model.User;
+
+import javax.management.relation.Role;
+import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * @author Baladou
  */
@@ -11,10 +18,11 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String username;
-
     private String email;
-    private String role;
-    private String supervisor;
+    private Role role;
+    private User supervisor;
+    private Date createdDate;
+    private Date modifiedDate;
 
     public UserDto() {
         super();
@@ -30,7 +38,7 @@ public class UserDto {
      * @param supervisor
      */
     public UserDto(long userId, String firstName, String lastName, String username, String email,
-                   String role, String supervisor) {
+                   Role role, User supervisor) {
         super();
         this.userId = userId;
         this.firstName = firstName;
@@ -42,6 +50,7 @@ public class UserDto {
         this.role = role;
     }
 
+
     /**
      * @param userId
      * @param firstName
@@ -50,7 +59,7 @@ public class UserDto {
      * @param email
      * @param role
      */
-    public UserDto(Long userId, String firstName, String lastName, String username, String email, String role) {
+    public UserDto(Long userId, String firstName, String lastName, String username, String email, Role role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -99,14 +108,14 @@ public class UserDto {
     /**
      * @return
      */
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
     /**
      * @return
      */
-    public String getSupervisor() {
+    public User getSupervisor() {
         return supervisor;
     }
 /////////////////Setters
@@ -149,14 +158,14 @@ public class UserDto {
     /**
      * @param role
      */
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
     /**
      * @param supervisor
      */
-    public void setSupervisor(String supervisor) {
+    public void setSupervisor(User supervisor) {
         this.supervisor = supervisor;
     }
 }

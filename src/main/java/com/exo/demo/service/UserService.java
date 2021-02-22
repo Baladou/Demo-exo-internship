@@ -1,16 +1,15 @@
 package com.exo.demo.service;
 
-import com.exo.demo.dto.UserDto;
+
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;
-import com.exo.demo.model.Role;
 
 
 import java.util.List;
+
 /**
  * @author Baladou
- *
  */
 public interface UserService {
 
@@ -21,18 +20,17 @@ public interface UserService {
     List<UserDto> getUsers();
 
     /**
-     *
      * @param firstname
-     * @return
+     * @return"
      */
     List<UserDto> getUsersByFirstNameLike(String firstname);
 
     /**
-     *
      * @param roleid
      * @return
      */
     List<UserDto> getUsersByRole(String roleid);
+
     /**
      * @param id
      * @return
@@ -45,6 +43,7 @@ public interface UserService {
      * @param id
      */
     void delete(long id) throws RessourceNotFoundException;
+
     /**
      * @param username
      * @param userDto
@@ -52,7 +51,7 @@ public interface UserService {
      * @throws RessourceNotFoundException
      * @throws RessourceExistsException
      */
-    UserDto update(String username,UserDto userDto) throws RessourceNotFoundException,RessourceExistsException;
+    UserDto update(String username, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
 
     /**
      * @param userDto

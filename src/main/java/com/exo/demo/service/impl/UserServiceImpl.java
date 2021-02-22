@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
 
-        return user.toUserDto();
+        return new UserDto();
     }
 
     @Override
@@ -169,3 +169,5 @@ public class UserServiceImpl implements UserService {
 
 
 }
+
+

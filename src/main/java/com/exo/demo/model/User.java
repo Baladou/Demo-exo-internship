@@ -44,11 +44,23 @@ public class User {
     @JoinColumn(name = "supervisor_id", insertable = true, updatable = true)
     private User supervisor;
 
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String username, String email, Role role, User supervisor) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.supervisor = supervisor;
+    }
+
     /**
      * @return
      */
 
-    public UserDto toUserDto() {
+   /* public UserDto toUserDto() {
         UserDto userDto = new UserDto();
         if (this.supervisor != null) {
             userDto = new UserDto(this.userId, this.firstName, this.lastName, this.username,
@@ -59,8 +71,8 @@ public class User {
         }
         return userDto;
     }
-
-    //////////Getters
+*/
+    //////////Gettersd
 
     /**
      * @return

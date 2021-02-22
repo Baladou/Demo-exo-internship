@@ -23,7 +23,7 @@ public class UserController {
         SUCCESS, FAILED
     }
 
-
+/*
     @Autowired
     private UserService userService;
 
@@ -64,6 +64,6 @@ public class UserController {
     public ApiResponse listUsersByFirstName(@RequestParam(value = "firstName") String firstname) {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.getUsersByFirstNameLike(firstname));
     }
-
+*/
 
 }
