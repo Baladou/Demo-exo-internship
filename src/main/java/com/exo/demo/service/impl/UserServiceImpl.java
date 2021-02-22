@@ -108,14 +108,20 @@ public class UserServiceImpl implements UserService {
 
         user.setModifiedDate(Calendar.getInstance().getTime());
         /////////////cherecher le superviseur
-        User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
-        if (supervisor != null) {
-            user.setSupervisor(supervisor);
+        if (userDto.getSupervisor() != null) {
+            User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
+            if (supervisor != null) {
+                user.setSupervisor(supervisor);
+            }
         }
         //cherecher le role
-        Role role = roleDao.findByName(userDto.getRole().getName());
-        if (role != null) {
-            user.setRole(role);
+        if (userDto.getRole() != null) {
+            Role role = roleDao.findByName(userDto.getRole().getName());
+            if (role != null) {
+                user.setRole(role);
+            } else {
+                throw new RessourceExistsException("Role inserted does not exist");
+            }
         }
 
         /////////enregistrere les modifications
@@ -148,18 +154,29 @@ public class UserServiceImpl implements UserService {
 
         ///////////// creér le nouveau user
         user = new User();
-
-        BeanUtils.copyProperties(userDto, user);
+        //BeanUtils.copyProperties(userDto, user);
+        user = userMapper.toUser(userDto);
         //// trouver le role affecté à l'utilisateur
-        Role role = roleDao.findByName(userDto.getRole().getName());
-        if (role == null) throw new RessourceExistsException("You must insert the role!!");
-        user.setRole(role);
+        if (userDto.getRole() != null) {
+            Role role = roleDao.findByName(userDto.getRole().getName());
+            if (role == null) throw new RessourceExistsException("You must insert the role!!");
+            user.setRole(role);
+        } else {
+            throw new RessourceExistsException("You must insert the role!!");
+        }
         ///////// trouver le superviceur affecté à l'utilisateur
-        User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
-        if (supervisor == null && !userDto.getRole().getName().toLowerCase().equals("directeur")) {
+
+        if (userDto.getSupervisor() != null) {
+            User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
+            if (supervisor == null && !userDto.getRole().getName().toLowerCase().equals("directeur")) {
+
+                throw new RessourceExistsException("You must insert the supervisor !!");
+            } else {
+                user.setSupervisor(supervisor);
+            }
+        } else {
             throw new RessourceExistsException("You must insert the supervisor !!");
         }
-        user.setSupervisor(supervisor);
 
 
         user.setCreatedDate(Calendar.getInstance().getTime());
@@ -167,7 +184,7 @@ public class UserServiceImpl implements UserService {
         ///////////enregistrer l'utilisateur dans la BD
         User user1 = userDao.save(user);
         userDto.setUserId(user1.getUserId());
-        return userDto;
+        return userMapper.toUserDto(user);
     }
 
 
