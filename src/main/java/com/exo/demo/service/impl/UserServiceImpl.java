@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         User user = userDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
 
-        return new UserDto();
+        return userMapper.toUserDto(user);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
             user.setSupervisor(supervisor);
         }
         //cherecher le role
-        Role role = roleDao.findByName(userDto.getRole().getRoleName());
+        Role role = roleDao.findByName(userDto.getRole().getName());
         if (role != null) {
             user.setRole(role);
         }
@@ -151,12 +151,12 @@ public class UserServiceImpl implements UserService {
 
         BeanUtils.copyProperties(userDto, user);
         //// trouver le role affecté à l'utilisateur
-        Role role = roleDao.findByName(userDto.getRole().getRoleName());
+        Role role = roleDao.findByName(userDto.getRole().getName());
         if (role == null) throw new RessourceExistsException("You must insert the role!!");
         user.setRole(role);
         ///////// trouver le superviceur affecté à l'utilisateur
         User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
-        if (supervisor == null && !userDto.getRole().getRoleName().toLowerCase().equals("directeur")) {
+        if (supervisor == null && !userDto.getRole().getName().toLowerCase().equals("directeur")) {
             throw new RessourceExistsException("You must insert the supervisor !!");
         }
         user.setSupervisor(supervisor);

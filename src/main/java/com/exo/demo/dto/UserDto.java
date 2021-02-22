@@ -1,9 +1,10 @@
 package com.exo.demo.dto;
 
 
+import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
 
-import javax.management.relation.Role;
+
 import java.util.Date;
 
 /**
@@ -17,8 +18,8 @@ public class UserDto {
     private String lastName;
     private String username;
     private String email;
-    private Role role;
-    private User supervisor;
+    private RoleDto role;
+    private UserDto supervisor;
     private Date createdDate;
     private Date modifiedDate;
 
@@ -36,7 +37,7 @@ public class UserDto {
      * @param supervisor
      */
     public UserDto(long userId, String firstName, String lastName, String username, String email,
-                   Role role, User supervisor) {
+                   RoleDto role, UserDto supervisor) {
         super();
         this.userId = userId;
         this.firstName = firstName;
@@ -64,7 +65,7 @@ public class UserDto {
      * @param email
      * @param role
      */
-    public UserDto(Long userId, String firstName, String lastName, String username, String email, Role role) {
+    public UserDto(Long userId, String firstName, String lastName, String username, String email, RoleDto role) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,14 +114,14 @@ public class UserDto {
     /**
      * @return
      */
-    public Role getRole() {
+    public RoleDto getRole() {
         return role;
     }
 
     /**
      * @return
      */
-    public User getSupervisor() {
+    public UserDto getSupervisor() {
         return supervisor;
     }
 /////////////////Setters
@@ -163,7 +164,7 @@ public class UserDto {
     /**
      * @param role
      */
-    public void setRole(Role role) {
+    public void setRole(RoleDto role) {
         this.role = role;
     }
 
@@ -178,7 +179,7 @@ public class UserDto {
     /**
      * @param supervisor
      */
-    public void setSupervisor(User supervisor) {
+    public void setSupervisor(UserDto supervisor) {
         this.supervisor = supervisor;
     }
 }
