@@ -74,6 +74,19 @@ public class UserDto {
         this.role = role;
     }
 
+    public UserDto(String firstName, String lastName, String username, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+    }
+
+    public UserDto(String username, RoleDto role) {
+        this.username = username;
+
+        this.role = role;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }

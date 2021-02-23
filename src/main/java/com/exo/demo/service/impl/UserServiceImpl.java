@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException {
+    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException {
 
 ///////////// tester si username ou l'email sont vides
         if (userDto.getUsername() == null || userDto.getEmail() == null)
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
 
         /////////////Tester si username ou l'email sont vides
         if (userDto.getUsername().trim().isEmpty() || userDto.getEmail().trim().isEmpty())
-            throw new RessourceExistsException("You must add a username and an email!!");
+            throw new NullException("Username and email must not be empty!!");
 
         ///////tester si username existe déja
         User user = userDao.findByUsername(userDto.getUsername());
@@ -153,14 +153,14 @@ public class UserServiceImpl implements UserService {
         if (user != null) throw new RessourceExistsException("Email Already Exists!!");
 
         ///////////// creér le nouveau user
-        user = new User();
-        //BeanUtils.copyProperties(userDto, user);
+
+
         user = userMapper.toUser(userDto);
         //// trouver le role affecté à l'utilisateur
         if (userDto.getRole() != null) {
             Role role = roleDao.findByName(userDto.getRole().getName());
-            System.out.println(role.getName());
-            if (role == null) throw new RessourceExistsException("You must insert the role!!");
+
+            if (role == null) throw new RessourceNotFoundException("role does not exist !!");
             user.setRole(role);
         } else {
             throw new RessourceExistsException("You must insert the role!!");

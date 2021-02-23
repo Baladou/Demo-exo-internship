@@ -59,6 +59,6 @@ public interface UserService {
      * @return
      * @throws RessourceExistsException
      */
-    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException;
+    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException;
 
 }
