@@ -28,9 +28,9 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 class UserServiceImplTest {
 
-    @InjectMocks
+    @Autowired
     private UserService userService;
-    @InjectMocks
+    @Autowired
     private UserMapper userMapper;
 
     @Mock
@@ -83,7 +83,7 @@ class UserServiceImplTest {
 
     @Test
     void createUser() throws NullException, RessourceExistsException {
-        UserDto NewuserObj = new UserDto(null, "Ahmed", "Ahmed", "Ahmed",
+        UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
                 "Ahmed@gmail.com", new RoleDto("Directeur"));
         User user = userMapper.toUser(NewuserObj);
 
