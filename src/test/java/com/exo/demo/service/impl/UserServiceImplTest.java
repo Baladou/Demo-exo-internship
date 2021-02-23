@@ -158,7 +158,7 @@ class UserServiceImplTest {
     void createUser_WhenUserNameNull() throws NullException, RessourceExistsException {
         Assertions.assertThrows(NullException.class,
                 () -> {
-                    UserDto NewuserObj = new UserDto("Hamza", "Ahmed", "Hamza",
+                    UserDto NewuserObj = new UserDto("Hamza", "Ahmed",
                             "Ahmed@gmail.com", new RoleDto(20, "directeur"));
                     RoleDto roleDto = new RoleDto("Directeur");
                     Role role = roleMapper.toRole(roleDto);
