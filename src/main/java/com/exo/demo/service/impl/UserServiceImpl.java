@@ -159,6 +159,7 @@ public class UserServiceImpl implements UserService {
         //// trouver le role affecté à l'utilisateur
         if (userDto.getRole() != null) {
             Role role = roleDao.findByName(userDto.getRole().getName());
+            System.out.println(role.getName());
             if (role == null) throw new RessourceExistsException("You must insert the role!!");
             user.setRole(role);
         } else {
@@ -175,7 +176,8 @@ public class UserServiceImpl implements UserService {
                 user.setSupervisor(supervisor);
             }
         } else {
-            throw new RessourceExistsException("You must insert the supervisor !!");
+            if (!userDto.getRole().getName().toLowerCase().equals("directeur"))
+                throw new RessourceExistsException("You must insert the supervisor !!");
         }
 
 
