@@ -52,7 +52,7 @@ public interface UserService {
      * @throws RessourceNotFoundException
      * @throws RessourceExistsException
      */
-    UserDto update(String username, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
+    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
 
     /**
      * @param userDto

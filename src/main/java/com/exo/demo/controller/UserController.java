@@ -53,10 +53,10 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/{username}")
-    public ApiResponse update(@PathVariable(value = "username") String username, @RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException {
+    @PutMapping(value = "/{id}")
+    public ApiResponse update(@PathVariable(value = "username") long id, @RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException {
 
-        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.update(username, user));
+        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.update(id, user));
     }
 
 

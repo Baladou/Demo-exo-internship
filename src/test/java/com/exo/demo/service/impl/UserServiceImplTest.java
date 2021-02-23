@@ -90,10 +90,63 @@ class UserServiceImplTest {
 
     @Test
     void delete() {
+       /* Assertions.assertThrows(RessourceNotFoundException.class,
+                () -> {
+                    UserDto NewuserObj = new UserDto("Ahmed",
+                            new RoleDto(20, "directeur"));
+                    RoleDto roleDto = new RoleDto("Directeur");
+                    Role role = roleMapper.toRole(roleDto);
+                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+                    User user = userMapper.toUser(NewuserObj);
+                    Mockito.when(userDao.deleteById(Mockito.anyLong()));
+
+                    userService.delete(88l);
+                });*/
     }
 
+    // senario update 1: update the username of the user
+   /* @Test
+    void update() throws RessourceNotFoundException, RessourceExistsException {
+
+        UserDto userObj = new UserDto(11l, "Hamza", "Hamza", "Hamza",
+                "Hamza@gmail.com", new RoleDto("Top-Manager"));
+        UserDto userObjUpdated = new UserDto(11l, "Hamza", "Hamza", "Safaa",
+                "Hamza@gmail.com", new RoleDto("Top-Manager"));
+
+        RoleDto roleDto = new RoleDto("Top-Manager");
+        Role role = roleMapper.toRole(roleDto);
+        Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+        User user = userMapper.toUser(userObj);
+        Mockito.when(userDao.findById(userObj.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
+        Mockito.when(userDao.findByUsername(Mockito.anyString())).thenReturn(null);
+        Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
+        UserDto Updated = userService.update(11l, new UserDto("Safaa"));
+        assertEquals("Safaa", Updated.getUsername());
+        //assertEquals(Updated.getSupervisor(), Updated.getSupervisor());
+
+    }
+*/
+
+    // senario update 2: donner un username qui existe deja
     @Test
-    void update() {
+    void updateWithUserName_Already_Exist() {
+        Assertions.assertThrows(RessourceExistsException.class,
+                () -> {
+                    UserDto userObj = new UserDto(11l, "Hamza", "Hamza", "Hamza",
+                            "Hamza@gmail.com", new RoleDto("Top-Manager"));
+                    UserDto userdtoObj = new UserDto(15l, "Nadia", "Nadia", "Nadia",
+                            "Nadia@gmail.com", new RoleDto("Top-Manager"));
+                    RoleDto roleDto = new RoleDto("Top-Manager");
+                    Role role = roleMapper.toRole(roleDto);
+                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+                    User userUp = userMapper.toUser(userdtoObj);
+                    User user = userMapper.toUser(userObj);
+                    Mockito.when(userDao.findById(userObj.getUserId())).thenReturn(java.util.Optional.ofNullable(user));
+                    Mockito.when(userDao.findByUsername(userdtoObj.getUsername())).thenReturn(userUp);
+                    // Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
+                    UserDto Updated = userService.update(11l, new UserDto("Nadia"));
+
+                });
     }
 
     //////////sénario 1: creer un directeur sans superviceur
@@ -226,6 +279,7 @@ class UserServiceImplTest {
                 });
     }
 
+
     //////////sénario 7: donner un role vide
     @Test
     void createUserWithEmptyRole() {
@@ -256,31 +310,68 @@ class UserServiceImplTest {
                     User user = userMapper.toUser(NewuserObj);
                     Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
                     UserDto Created = userService.createUser(NewuserObj);
-                    assertEquals(Created.getUsername(), NewuserObj.getUsername());
-                    assertEquals(Created.getSupervisor(), NewuserObj.getSupervisor());
+
                 });
 
     }
 
-    //////////sénario 7: donner un role qui n'existe pas
+    //////////sénario 9: donner un role qui n'existe pas
     @Test
     void createUserWithUnexcitingRole() {
         Assertions.assertThrows(RessourceNotFoundException.class,
                 () -> {
                     UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
-                            "Ahmed@gmail.com", new RoleDto(""), userSupervisorDto);
-                    RoleDto roleDto = new RoleDto("");
-                    Role role = roleMapper.toRole(roleDto);
-                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+                            "Ahmed@gmail.com", new RoleDto("Ab"), userSupervisorDto);
+
+                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(null);
 
                     User user = userMapper.toUser(NewuserObj);
-                    // User userSupervisor = userMapper.toUser(userSupervisorDto);
+                    User userSupervisor = userMapper.toUser(userSupervisorDto);
                     Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
-                    //sMockito.when(userDao.findByUsername(Mockito.anyString())).thenReturn(userSupervisor);
+                    // Mockito.when(userDao.findByUsername(user.getUsername())).thenReturn(user);
+                    Mockito.when(userDao.findByUsername(userSupervisorDto.getUsername())).thenReturn(userSupervisor);
                     UserDto Created = userService.createUser(NewuserObj);
-                    assertEquals(Created.getUsername(), NewuserObj.getUsername());
-                    assertEquals(Created.getSupervisor(), NewuserObj.getSupervisor());
+
                 });
 
     }
+
+    //////////sénario 10: donner sans superviseur
+    @Test
+    void createUserWithoutSupervisor() {
+        Assertions.assertThrows(RessourceExistsException.class,
+                () -> {
+                    UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
+                            "Ahmed@gmail.com", new RoleDto("Manager"));
+                    RoleDto roleDto = new RoleDto("Manager");
+                    Role role = roleMapper.toRole(roleDto);
+                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+                    User user = userMapper.toUser(NewuserObj);
+                    Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
+                    UserDto Created = userService.createUser(NewuserObj);
+
+                });
+
+    }
+
+    //////////sénario 11: donner un superviseur qui n'existe pas
+    @Test
+    void createUserWithUnexcitingSupervisor() throws RessourceNotFoundException, RessourceExistsException, NullException {
+
+        Assertions.assertThrows(RessourceExistsException.class,
+                () -> {
+                    UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
+                            "Ahmed@gmail.com", new RoleDto("Manager"), userSupervisorDto);
+                    RoleDto roleDto = new RoleDto("Manager");
+                    Role role = roleMapper.toRole(roleDto);
+                    Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
+                    User user = userMapper.toUser(NewuserObj);
+                    Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
+                    Mockito.when(userDao.findByUsername(userSupervisorDto.getUsername())).thenReturn(null);
+                    UserDto Created = userService.createUser(NewuserObj);
+
+                });
+    }
+
+
 }

@@ -76,10 +76,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(String username, UserDto userDto) throws RessourceExistsException,
+    public UserDto update(long id, UserDto userDto) throws RessourceExistsException,
             RessourceNotFoundException {
         //trouver l'utilisateur pour le mettre à jour
-        User user = userDao.findByUsername(username);
+        User user = userDao.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
 
         ////tester s'il existe un autre utlisateur avec le meme username ou le meme email
         User Nuser = userDao.findByUsername(userDto.getUsername());
@@ -165,7 +166,7 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RessourceExistsException("You must insert the role!!");
         }
-        ///////// trouver le superviceur affecté à l'utilisateur
+        ///////// trouver le superviseur affecté à l'utilisateur
 
         if (userDto.getSupervisor() != null) {
             User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
