@@ -27,6 +27,23 @@ public class UserDto {
         super();
     }
 
+    public UserDto(String firstName, String lastName, String username, String email, RoleDto role, UserDto supervisor) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.supervisor = supervisor;
+    }
+
+    public UserDto(String firstName, String lastName, String username, String email, RoleDto role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+    }
+
     /**
      * @param userId
      * @param firstName

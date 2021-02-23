@@ -22,10 +22,15 @@ public class RoleDto {
      */
 
 
+    public RoleDto(String name) {
+        this.name = name;
+    }
+
     /**
      * @param id
      * @param name
      */
+
     public RoleDto(long id, String name) {
         this.id = id;
         this.name = name;

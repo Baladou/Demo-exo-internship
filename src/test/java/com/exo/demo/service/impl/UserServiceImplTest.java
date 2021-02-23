@@ -2,43 +2,62 @@ package com.exo.demo.service.impl;
 
 
 import com.exo.demo.dao.UserDao;
-
+import com.exo.demo.dto.RoleDto;
+import com.exo.demo.dto.UserDto;
+import com.exo.demo.exception.NullException;
+import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.User;
 import com.exo.demo.service.UserService;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(UserServiceImpl.class)
+
+@RunWith(MockitoJUnitRunner.class)
 class UserServiceImplTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
+    @InjectMocks
+    private UserService userService;
+    @InjectMocks
+    private UserMapper userMapper;
+
+    @Mock
     private UserDao userDao;
 
-    @MockBean
-    private UserService userService;
 
+    @Before
+    public void setUp() throws Exception {
+        userDao = Mockito.mock(userDao.getClass());
+
+    }
 
     @Test
     void getUsers() {
+        List<User> list = new ArrayList<User>();
+        UserDto user1 = new UserDto("Ahmed", "Ahmed", "Ahmed",
+                "Ahmed@gmail.com", new RoleDto("Directeur"));
+
+        list.add(userMapper.toUser(user1));
+
+        Mockito.when(userDao.findAll()).thenReturn(list);
+
+        //test
+        List<UserDto> UsersList = userService.getUsers();
+
+        assertEquals(1, UsersList.size());
+        Mockito.verify(userDao, Mockito.times(1)).findAll();
 
     }
 
@@ -63,18 +82,22 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUser() {
-        ////UserDto NewuserObj = new UserDto(20L, "Ahmed", "Ahmed", "Ahmed",
-        //    "Ahmed@gmail.com", "Developper", "Ali");
+    void createUser() throws NullException, RessourceExistsException {
+        UserDto NewuserObj = new UserDto(null, "Ahmed", "Ahmed", "Ahmed",
+                "Ahmed@gmail.com", new RoleDto("Directeur"));
+        User user = userMapper.toUser(NewuserObj);
+
         /*User user = new User();
         user.setUsername(NewuserObj.getUsername());
-        user.setFirstName(NewuserObj.getFirstName());
         user.setLastName(NewuserObj.getLastName());
-        user.setRole(new Role(NewuserObj.getRole(), new ArrayList<>()));
-        user.setSupervisor(new User());*/
-
+        user.setFirstName(NewuserObj.getFirstName());
+        user.setEmail(NewuserObj.getEmail());
+        user.setRole(new Role(NewuserObj.getRole().getName()));*/
+        System.out.println(user.getUsername());
+        Mockito.when(userDao.save(Mockito.any(User.class))).thenReturn(user);
         // UserDto Created = userService.createUser(NewuserObj);
-        //Mockito.when(userDao.save(NewuserObj.));
+        System.out.println(NewuserObj.getUsername());
+        //assertEquals(Created.getUsername(), NewuserObj.getUsername());
 
 
     }

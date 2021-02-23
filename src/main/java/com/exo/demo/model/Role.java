@@ -42,6 +42,9 @@ public class Role {
         this.users = users;
     }
 
+    public Role(String manager) {
+    }
+
     /**
      * @return
      */
