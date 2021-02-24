@@ -145,6 +145,8 @@ public class UserServiceImpl implements UserService {
             throw new NullException("Username and email must not be empty!!");
 
         ///////tester si username existe déja
+
+
         User user = userDao.findByUsername(userDto.getUsername());
         if (user != null) throw new RessourceExistsException("Username Already Exists!!");
 

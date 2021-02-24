@@ -2,65 +2,87 @@ package com.exo.demo.controller;
 
 import com.exo.demo.Configuration.H2ConfigProfileTest;
 import com.exo.demo.DemoApplication;
-
-import com.exo.demo.dto.UserDto;
-import com.exo.demo.response.ApiResponse;
+import com.exo.demo.dao.RoleDao;
+import com.exo.demo.dao.UserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
+@AutoConfigureMockMvc
 @SpringBootTest(classes = {
         DemoApplication.class,
         H2ConfigProfileTest.class})
 
 @ActiveProfiles("test")
 public class UserControllerE2ETest {
-    @LocalServerPort
-    int randomServerPort;
 
-  
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserDao userdao;
+    @Autowired
+    private RoleDao roledao;
+
+
     String NewUserObj = "{\n" +
-            "   \"Username\": \"Ahmed\",\n" +
-            "   \"firstName\": \"Ahmed\",\n" +
-            "\"lastName\": \"Ahmed\",\n" +
-            "        \"email\": \"Ahmed@gmail.com\",\n" +
-            "        \"role\": \"Directeur\" \n" +
+            "        \"firstName\": \"Hamza\",\n" +
+            "        \"lastName\": \"Hamza\",\n" +
+            "        \"username\": \"Hamza\",\n" +
+            "        \"email\": \"Hamza@gmail.com\",\n" +
+            "         \"role\": {\n" +
+            "            \"name\": \"Directeur\"\n" +
+            "        },\n" +
+            "        \"supervisor\":{\n" +
+            "            \"username\": \"null\"}\n" +
+            "       \n" +
+            "}\n" +
+            "            ";
+    String NewRole = "{\n" +
+            "    \"name\": \"directeur\"\n" +
             "}";
-    @LocalServerPort
-    private int port;
 
     @Test
     public void createUser() throws Exception {
+
+        String url1 = "/api/users";
+        String res = mockMvc.perform(MockMvcRequestBuilders.post(url1)
+                .content(NewUserObj)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(res);
+        //.andExpect(status().isCreated());
 
 
     }
 
     @Test
-    public void getusers() throws URISyntaxException {
-        RestTemplate restTemplate = new RestTemplate();
+    public void createRole() throws Exception {
+        String url = "/api/roles";
 
-        final String baseUrl = "http://localhost:" + randomServerPort + "/api/users";
-        URI uri = new URI(baseUrl);
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
+                .content(NewRole)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
 
-        ResponseEntity<ApiResponse> result = restTemplate.getForEntity(uri, ApiResponse.class);
 
-        //Verify request succeed
-        assertEquals(200, result.getStatusCodeValue());
-        // assertEquals(true, result.getBody().contains("employeeList"));
+    }
+
+    @Test
+    public void getUsers() {
+
     }
 }
