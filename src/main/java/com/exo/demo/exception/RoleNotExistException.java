@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class RoleNotFoundException extends Exception {
+public class RoleNotExistException extends Exception {
 
     private static final long serialVersionUID = 871618588278915308L;
 
-    public RoleNotFoundException(String message) {
+    public RoleNotExistException(String message) {
         super(message);
     }
 
