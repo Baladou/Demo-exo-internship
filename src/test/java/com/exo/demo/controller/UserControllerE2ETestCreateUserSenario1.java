@@ -86,7 +86,7 @@ public class UserControllerE2ETestCreateUserSenario1 {
 
     }
 
-    ////////// Senario1: donner un user sans superviseur
+    ////////// Senario2: donner un user sans superviseur
     @Test
     public void Throw_exception_when_createUserWithoutSupervisor() throws Exception {
 
