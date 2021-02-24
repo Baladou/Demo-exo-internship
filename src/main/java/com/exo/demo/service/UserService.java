@@ -5,6 +5,7 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RoleNotFoundException;
 
 
 import java.util.List;
@@ -52,13 +53,13 @@ public interface UserService {
      * @throws RessourceNotFoundException
      * @throws RessourceExistsException
      */
-    UserDto update(String username, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
+    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
 
     /**
      * @param userDto
      * @return
      * @throws RessourceExistsException
      */
-    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException;
+    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotFoundException;
 
 }

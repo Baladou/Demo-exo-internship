@@ -4,6 +4,7 @@
 package com.exo.demo.controller;
 
 import com.exo.demo.dto.RoleDto;
+import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.model.Role;
@@ -11,6 +12,7 @@ import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,16 +28,16 @@ public class RoleController {
 
 
     @PostMapping
-    public Role createRole(@RequestBody Role role) throws Exception {
+    public ResponseEntity<Role> createRole(@RequestBody Role role) throws Exception {
 
-        return roleService.createRole(role);
+        return new ResponseEntity<Role>(roleService.createRole(role), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<RoleDto> listRoles() {
+    public ResponseEntity<List<RoleDto>> listRoles() {
 
 
-        return roleService.getRoles();
+        return new ResponseEntity<List<RoleDto>>(roleService.getRoles(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
