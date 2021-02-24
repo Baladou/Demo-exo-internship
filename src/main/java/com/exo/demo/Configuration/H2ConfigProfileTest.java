@@ -31,7 +31,7 @@ class H2ConfigProfileTest {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:db;DB_CLOSE_DELAY=-1");
+        dataSource.setUrl("jdbc:h2:mem:testdb");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
 
@@ -39,6 +39,7 @@ class H2ConfigProfileTest {
     }
 
     @Bean
+    @Profile("test")
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf =
                 new LocalContainerEntityManagerFactoryBean();
@@ -63,13 +64,14 @@ class H2ConfigProfileTest {
 
     private Properties createHibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+        properties.setProperty("javax.persistence.schema-generation.database.action", "update");
         properties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         return properties;
     }
 
     @Bean
+    @Profile("test")
     PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }

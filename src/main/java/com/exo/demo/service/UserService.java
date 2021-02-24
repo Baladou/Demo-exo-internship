@@ -5,6 +5,7 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RoleNotFoundException;
 
 
 import java.util.List;
@@ -59,6 +60,6 @@ public interface UserService {
      * @return
      * @throws RessourceExistsException
      */
-    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException;
+    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotFoundException;
 
 }

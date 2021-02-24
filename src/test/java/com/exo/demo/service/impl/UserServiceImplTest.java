@@ -8,6 +8,7 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
+import com.exo.demo.exception.RoleNotFoundException;
 import com.exo.demo.mapper.RoleMapper;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
@@ -151,7 +152,7 @@ class UserServiceImplTest {
 
     //////////sénario 1: creer un directeur sans superviceur
     @Test
-    void createUser() throws NullException, RessourceExistsException, RessourceNotFoundException {
+    void createUser() throws NullException, RessourceExistsException, RessourceNotFoundException, RoleNotFoundException {
 
         UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
                 "Ahmed@gmail.com", new RoleDto("directeur"));

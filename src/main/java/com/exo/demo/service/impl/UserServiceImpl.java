@@ -8,6 +8,7 @@ import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
 
+import com.exo.demo.exception.RoleNotFoundException;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
@@ -134,7 +135,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException {
+    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotFoundException {
 
 ///////////// tester si username ou l'email sont vides
         if (userDto.getUsername() == null || userDto.getEmail() == null)
@@ -161,9 +162,9 @@ public class UserServiceImpl implements UserService {
         user = userMapper.toUser(userDto);
         //// trouver le role affecté à l'utilisateur
         if (userDto.getRole() != null) {
-            Role role = roleDao.findByName(userDto.getRole().getName());
+            Role role = roleDao.findByName(userDto.getRole().getName().toLowerCase());
 
-            if (role == null) throw new RessourceNotFoundException("role does not exist !!");
+            if (role == null) throw new RoleNotFoundException("role does not exist !!");
             user.setRole(role);
         } else {
             throw new RessourceExistsException("You must insert the role!!");
@@ -174,7 +175,7 @@ public class UserServiceImpl implements UserService {
             User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
             if (supervisor == null && !userDto.getRole().getName().toLowerCase().equals("directeur")) {
 
-                throw new RessourceExistsException("You must insert the supervisor !!");
+                throw new RessourceExistsException("the supervisor must not be empty !!");
             } else {
                 user.setSupervisor(supervisor);
             }

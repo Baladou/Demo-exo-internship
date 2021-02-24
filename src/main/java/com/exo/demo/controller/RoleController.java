@@ -34,10 +34,10 @@ public class RoleController {
     }
 
     @GetMapping
-    public List<RoleDto> listRoles() {
+    public ResponseEntity<List<RoleDto>> listRoles() {
 
 
-        return roleService.getRoles();
+        return new ResponseEntity<List<RoleDto>>(roleService.getRoles(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
