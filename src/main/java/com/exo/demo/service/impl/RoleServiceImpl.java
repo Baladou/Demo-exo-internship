@@ -7,6 +7,7 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
 
+import com.exo.demo.exception.RoleNotFoundException;
 import com.exo.demo.mapper.RoleMapper;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
@@ -57,11 +58,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(long id) throws RessourceNotFoundException {
-      /*  RoleDto role = findOneRole(id);
+    public void delete(long id) throws RoleNotFoundException {
+        Role role = roleDao.findById(id)
+                .orElseThrow(() -> new RoleNotFoundException("Role  not found for the id: " + id));
         if (role.getUsers().size() != 0)
-            throw new RessourceNotFoundException(" You can not delete this role because it is used by other ressources!!");
-        roleDao.deleteById(id);*/
+            throw new RoleNotFoundException("You can not delete this role because it is used by other ressources!!");
+        roleDao.deleteById(id);
     }
 
     @Override

@@ -123,21 +123,7 @@ public class UserControllerE2ETestCreateUSerSenario2 {
 
         }
 */
-    @Test
-    public void getRole() throws Exception {
-
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/api/roles/").accept(
-                MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-        System.out.println(response.getContentAsString());
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
-
-
-    }
+    
 
     @Test
     public void getUsers() {

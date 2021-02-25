@@ -104,6 +104,8 @@ public class UserServiceImpl implements UserService {
             User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
             if (supervisor != null) {
                 user.setSupervisor(supervisor);
+            } else {
+                throw new RessourceExistsException("Supervisor inserted does not exist!!");
             }
         }
         //cherecher le role
@@ -115,9 +117,10 @@ public class UserServiceImpl implements UserService {
                 throw new RoleNotExistException("Role inserted does not exist!!");
             }
         }
-        System.out.println(OldUserDto.equals(userMapper.toUserDto(user)));
+
         if (OldUserDto.equals(userMapper.toUserDto(user))) {
-            throw new NothingIsUpdatedException("We didn't do any update, verify your request body");
+            System.out.println(OldUserDto.equals(userMapper.toUserDto(user)));
+            throw new NothingIsUpdatedException("We didn't do any update, verify your request body!!");
         }
         /////////enregistrere les modifications
         userDao.save(user);

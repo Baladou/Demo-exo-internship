@@ -8,7 +8,6 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
-
 import com.exo.demo.exception.RoleNotExistException;
 import com.exo.demo.mapper.RoleMapper;
 import com.exo.demo.mapper.UserMapper;
@@ -170,7 +169,7 @@ class UserServiceImplTest {
         Assertions.assertThrows(RessourceExistsException.class,
                 () -> {
                     UserDto NewuserObj = new UserDto("Hamza", "Ahmed", "Hamza",
-                            "Ahmed@gmail.com", new RoleDto(20, "directeur"));
+                            "Ahmed@gmail.com", new RoleDto("directeur"));
                     RoleDto roleDto = new RoleDto("Directeur");
                     Role role = roleMapper.toRole(roleDto);
                     Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);

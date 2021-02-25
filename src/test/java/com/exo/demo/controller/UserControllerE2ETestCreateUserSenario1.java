@@ -100,10 +100,10 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_exception_when_createUserWithoutSupervisor() throws Exception {
         String NewUserObj = "{\n" +
-                "        \"firstName\": \"Hala\",\n" +
-                "        \"lastName\": \"Hala\",\n" +
-                "        \"username\": \"Hala\",\n" +
-                "        \"email\": \"Hala@gmail.com\",\n" +
+                "        \"firstName\": \"Amina\",\n" +
+                "        \"lastName\": \"Amina\",\n" +
+                "        \"username\": \"Amina\",\n" +
+                "        \"email\": \"Amina@gmail.com\",\n" +
                 "         \"role\": {\n" +
                 "            \"name\": \"Manager\"\n" +
                 "        }\n" +
@@ -125,10 +125,10 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_NotFoundException_when_createUserWithUnexcitingSupervisor() throws Exception {
         String NewUserObjWithUnexsistingSuperviror = "{\n" +
-                "        \"firstName\": \"Hala\",\n" +
-                "        \"lastName\": \"Hala\",\n" +
-                "        \"username\": \"Hala\",\n" +
-                "        \"email\": \"Hala@gmail.com\",\n" +
+                "        \"firstName\": \"Zineb\",\n" +
+                "        \"lastName\": \"Zineb\",\n" +
+                "        \"username\": \"Zineb\",\n" +
+                "        \"email\": \"Zineb@gmail.com\",\n" +
                 "         \"role\": {\n" +
                 "            \"name\": \"Manager\"\n" +
                 "        },\n" +
@@ -184,14 +184,14 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_NotFoundException_when_createUserWithUnexcitingRole() throws Exception {
         String NewUserObjWithUnexsistingRole = "{\n" +
-                "        \"firstName\": \"Hala\",\n" +
-                "        \"lastName\": \"Hala\",\n" +
-                "        \"username\": \"Hala\",\n" +
-                "        \"email\": \"Hala@gmail.com\",\n" +
+                "        \"firstName\": \"Soufia\",\n" +
+                "        \"lastName\": \"Soufia\",\n" +
+                "        \"username\": \"Soufia\",\n" +
+                "        \"email\": \"Soufia@gmail.com\",\n" +
                 "         \"role\": {\n" +
                 "            \"name\": \"Tester\"\n" +
                 "        },\n" +
-                "        \"supervisor\":{\"username\": \"Assala\"}\n" +
+                "        \"supervisor\":{\"username\": \"Hamza\"}\n" +
                 "       \n" +
                 "}\n" +
                 "            ";
@@ -210,11 +210,11 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_NotFoundException_when_createUserWithoutRole() throws Exception {
         String NewUserObjWithUnexsistingRole = "{\n" +
-                "        \"firstName\": \"Hala\",\n" +
-                "        \"lastName\": \"Hala\",\n" +
-                "        \"username\": \"Hala\",\n" +
-                "        \"email\": \"Hala@gmail.com\",\n" +
-                "        \"supervisor\":{\"username\": \"Assala\"}\n" +
+                "        \"firstName\": \"Salma\",\n" +
+                "        \"lastName\": \"Salma\",\n" +
+                "        \"username\": \"Salma\",\n" +
+                "        \"email\": \"Salma@gmail.com\",\n" +
+                "        \"supervisor\":{\"username\": \"Hamza\"}\n" +
                 "       \n" +
                 "}\n" +
                 "            ";
@@ -233,9 +233,9 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_Exception_when_createUserWithoutUsername() throws Exception {
         String NewUserObj = "{\n" +
-                "        \"firstName\": \"Hamza\",\n" +
-                "        \"lastName\": \"Hamza\",\n" +
-                "        \"email\": \"Hamza@gmail.com\",\n" +
+                "        \"firstName\": \"Houda\",\n" +
+                "        \"lastName\": \"Houda\",\n" +
+                "        \"email\": \"Houda@gmail.com\",\n" +
                 "         \"role\": {\n" +
                 "            \"name\": \"Manager\"\n" +
                 "        },\n" +
@@ -260,10 +260,10 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Test
     public void Throw_Exception_when_createUserWithEmpltyUsername() throws Exception {
         String NewUserObj = "{\n" +
-                "        \"firstName\": \"Hamza\",\n" +
-                "        \"lastName\": \"Hamza\",\n" +
+                "        \"firstName\": \"Alaa\",\n" +
+                "        \"lastName\": \"Alaa\",\n" +
                 "        \"username\": \"\",\n" +
-                "        \"email\": \"Hamza@gmail.com\",\n" +
+                "        \"email\": \"Alaa@gmail.com\",\n" +
                 "         \"role\": {\n" +
                 "            \"name\": \"Manager\"\n" +
                 "        },\n" +

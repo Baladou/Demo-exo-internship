@@ -4,7 +4,9 @@ import com.exo.demo.Configuration.H2ConfigProfileTest;
 import com.exo.demo.DemoApplication;
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
+import com.exo.demo.exception.NothingIsUpdatedException;
 import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RessourceNotFoundException;
 import com.exo.demo.exception.RoleNotExistException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -36,10 +38,6 @@ public class UserControllerUpdateE2ETest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserDao userdao;
-    @Autowired
-    private RoleDao roledao;
     String SupervisorObj = "{\n" +
             "        \"firstName\": \"Hamza\",\n" +
             "        \"lastName\": \"Hamza\",\n" +
@@ -167,8 +165,25 @@ public class UserControllerUpdateE2ETest {
                 .andReturn();
 
     }
-/*
-    //////Senario4: update Role avec un role qui n'existe pas
+
+    //////Senario4: update Role avec un superviseur qui n'existe pas
+    @Test
+    public void ThrowException_When_update_WithUnExistingSupervisor() throws Exception {
+        String uri = "/api/users/4";
+        String Obj = "{\"supervisor\": {\n" +
+                "    \"username\": \"Tester\"\n" +
+                "}}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceExistsException))
+                .andExpect(res -> assertEquals("Supervisor inserted does not exist!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
+
+    //////Senario5: update Role avec un role qui n'existe pas
     @Test
     public void ThrowException_When_update_WithUnExistingRole() throws Exception {
         String uri = "/api/users/4";
@@ -183,7 +198,37 @@ public class UserControllerUpdateE2ETest {
                 .andReturn();
 
 
-    }*/
+    }
 
+    /////
+//////Senario6: Verifier si les changement sont fait(probleme de body)
+    @Test
+    public void ThrowException_When_NoUpdate_IsDone() throws Exception {
+        String uri = "/api/users/4";
+        String Obj = "{\"userName\" : \"ahmed\"}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof NothingIsUpdatedException))
+                .andExpect(res -> assertEquals("We didn't do any update, verify your request body!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
+
+    //////Senario7: id  user n'existe pas
+    @Test
+    public void ThrowException_When_UserToUpdate_NotExist() throws Exception {
+        String uri = "/api/users/5";
+        String Obj = "{\"username\" : \"ahmed\"}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceNotFoundException))
+                .andExpect(res -> assertEquals("User record not found for the id: 5", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
 
 }
