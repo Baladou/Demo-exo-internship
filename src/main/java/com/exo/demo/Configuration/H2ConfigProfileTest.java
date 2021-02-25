@@ -73,6 +73,7 @@ class H2ConfigProfileTest {
     @Bean
     @Profile("test")
     PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+
         return new JpaTransactionManager(emf);
     }
 

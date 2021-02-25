@@ -4,6 +4,8 @@ import com.exo.demo.Configuration.H2ConfigProfileTest;
 import com.exo.demo.DemoApplication;
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
+import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RoleNotExistException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
@@ -75,7 +78,7 @@ public class UserControllerUpdateE2ETest {
     @Before
     public void createRoleDirecteorAndSupervirorAndUsetToUpdate() throws Exception {
 
-        //list = new ArrayList<>(Arrays.asList("test1", "test2"));
+        ////Creer les roles
         String url = "/api/roles";
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url)
@@ -87,8 +90,9 @@ public class UserControllerUpdateE2ETest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         MockHttpServletResponse response = result.getResponse();
-        System.out.println(response.getContentAsString());
+        //System.out.println(response.getContentAsString());
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+        //creer le superviseur
         String uri = "/api/users";
         MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(SupervisorObj)
@@ -97,7 +101,7 @@ public class UserControllerUpdateE2ETest {
         MockHttpServletResponse response1 = result1.getResponse();
         assertEquals(HttpStatus.CREATED.value(), response1.getStatus());
 
-
+        //Creer User qu'on veut le  mettre à jour
         MvcResult result2 = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(NewUserObjWithSuperviror)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -108,6 +112,7 @@ public class UserControllerUpdateE2ETest {
 
     }
 
+    //////Senario1: update firstName
     @Test
     public void update() throws Exception {
         String uri = "/api/users/4";
@@ -129,5 +134,56 @@ public class UserControllerUpdateE2ETest {
 
 
     }
+
+    //////Senario2: update Username avec un username qui exist déja
+    @Test
+    public void ThrowException_When_update_UsernameWithExistingOne() throws Exception {
+        String uri = "/api/users/4";
+        String Obj = "{\n" +
+                "         \"username\":\"Hamza\"\n" +
+                "}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceExistsException))
+                .andExpect(res -> assertEquals("Username or Email  already exist!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
+
+    //////Senario3: update Email avec un email qui exist déja
+    @Test
+    public void ThrowException_When_update_EmailWithExistingOne() throws Exception {
+        String uri = "/api/users/4";
+        String Obj = "{\n" +
+                "         \"email\":\"Hamza@gmail.com\"\n" +
+                "}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceExistsException))
+                .andExpect(res -> assertEquals("Username or Email  already exist!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+    }
+/*
+    //////Senario4: update Role avec un role qui n'existe pas
+    @Test
+    public void ThrowException_When_update_WithUnExistingRole() throws Exception {
+        String uri = "/api/users/4";
+        String Obj = "{\"role\": {\n" +
+                "    \"name\": \"Tester\"\n" +
+                "}}";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                .content(Obj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RoleNotExistException))
+                .andExpect(res -> assertEquals("Role inserted does not exist!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }*/
+
 
 }

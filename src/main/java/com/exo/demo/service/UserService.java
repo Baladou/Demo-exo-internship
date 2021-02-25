@@ -48,7 +48,7 @@ public interface UserService {
      * @throws RessourceNotFoundException
      * @throws RessourceExistsException
      */
-    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
+    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException, RoleNotExistException, NothingIsUpdatedException;
 
     /**
      * @param userDto

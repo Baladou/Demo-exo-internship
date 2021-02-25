@@ -6,6 +6,7 @@ import com.exo.demo.model.User;
 
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Baladou
@@ -231,6 +232,25 @@ public class UserDto {
      */
     public void setSupervisor(UserDto supervisor) {
         this.supervisor = supervisor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return getUserId().equals(userDto.getUserId()) &&
+                Objects.equals(getFirstName(), userDto.getFirstName()) &&
+                Objects.equals(getLastName(), userDto.getLastName()) &&
+                getUsername().equals(userDto.getUsername()) &&
+                getEmail().equals(userDto.getEmail()) &&
+                Objects.equals(getRole(), userDto.getRole()) &&
+                Objects.equals(getSupervisor(), userDto.getSupervisor());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getFirstName(), getLastName(), getUsername(), getEmail(), getRole(), getSupervisor());
     }
 }
 

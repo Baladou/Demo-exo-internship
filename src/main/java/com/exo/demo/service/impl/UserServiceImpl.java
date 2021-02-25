@@ -3,10 +3,7 @@ package com.exo.demo.service.impl;
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.NullException;
-import com.exo.demo.exception.RessourceExistsException;
-import com.exo.demo.exception.RessourceNotFoundException;
-import com.exo.demo.exception.RoleNotExistException;
+import com.exo.demo.exception.*;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
@@ -73,19 +70,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(long id, UserDto userDto) throws RessourceExistsException,
-            RessourceNotFoundException {
+            RessourceNotFoundException, RoleNotExistException, NothingIsUpdatedException {
         //trouver l'utilisateur pour le mettre à jour
         User user = userDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
-
+        UserDto OldUserDto = userMapper.toUserDto(user);
         ////tester s'il existe un autre utlisateur avec le meme username ou le meme email
         User Nuser = userDao.findByUsername(userDto.getUsername());
-        User Nuser2 = userDao.findByEmail(userDto.getUsername());
+        User Nuser2 = userDao.findByEmail(userDto.getEmail());
         if ((Nuser != null || Nuser2 != null) && Nuser != user && Nuser2 != user)
             throw new RessourceExistsException("Username or Email  already exist!!");
 
-        //////////tester si l'utilisateur demandé existe
-        if (user == null) throw new RessourceNotFoundException("User not found!!");
 
         /////////////tester si les champs insers si  ne sont t pas vides pour les mettre à jour
 
@@ -113,14 +108,17 @@ public class UserServiceImpl implements UserService {
         }
         //cherecher le role
         if (userDto.getRole() != null) {
-            Role role = roleDao.findByName(userDto.getRole().getName());
+            Role role = roleDao.findByName(userDto.getRole().getName().toLowerCase());
             if (role != null) {
                 user.setRole(role);
             } else {
-                throw new RessourceExistsException("Role inserted does not exist");
+                throw new RoleNotExistException("Role inserted does not exist!!");
             }
         }
-
+        System.out.println(OldUserDto.equals(userMapper.toUserDto(user)));
+        if (OldUserDto.equals(userMapper.toUserDto(user))) {
+            throw new NothingIsUpdatedException("We didn't do any update, verify your request body");
+        }
         /////////enregistrere les modifications
         userDao.save(user);
         userDto.setUserId(userDao.save(user).getUserId());

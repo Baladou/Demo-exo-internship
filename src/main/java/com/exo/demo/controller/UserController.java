@@ -4,8 +4,10 @@
 package com.exo.demo.controller;
 
 import com.exo.demo.dto.UserDto;
+import com.exo.demo.exception.NothingIsUpdatedException;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
+import com.exo.demo.exception.RoleNotExistException;
 import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException {
+    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException, RoleNotExistException, NothingIsUpdatedException {
 
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.update(id, user));
     }
