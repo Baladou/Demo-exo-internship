@@ -6,10 +6,11 @@ import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceExistsException;
+import com.exo.demo.exception.RessourceNotFoundException;
+import com.exo.demo.exception.RoleNotExistException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.assertEquals;
@@ -44,18 +44,21 @@ public class UserControllerE2ETestCreateUserSenario1 {
     @Autowired
     private RoleDao roledao;
 
-
-    String NewUserObj = "{\n" +
-            "        \"firstName\": \"Hala\",\n" +
-            "        \"lastName\": \"Hala\",\n" +
-            "        \"username\": \"Hala\",\n" +
-            "        \"email\": \"Hala@gmail.com\",\n" +
+    String SupervisorObj = "{\n" +
+            "        \"firstName\": \"Hamza\",\n" +
+            "        \"lastName\": \"Hamza\",\n" +
+            "        \"username\": \"Hamza\",\n" +
+            "        \"email\": \"Hamza@gmail.com\",\n" +
             "         \"role\": {\n" +
-            "            \"name\": \"Manager\"\n" +
-            "        }\n" +
+            "            \"name\": \"directeur\"\n" +
+            "        },\n" +
+            "        \"supervisor\":{\n" +
+            "            \"username\": \"null\"}\n" +
             "       \n" +
             "}\n" +
-            "             ";
+            "            ";
+
+
     String NewRole = "{\n" +
             "    \"name\": \"directeur\"\n" +
             "}";
@@ -67,7 +70,7 @@ public class UserControllerE2ETestCreateUserSenario1 {
             "}";
 
     @Before
-    public void createRoleDirecteor() throws Exception {
+    public void createRoleDirecteorAndSuperviror() throws Exception {
 
         //list = new ArrayList<>(Arrays.asList("test1", "test2"));
         String url = "/api/roles";
@@ -83,45 +86,203 @@ public class UserControllerE2ETestCreateUserSenario1 {
         MockHttpServletResponse response = result.getResponse();
         System.out.println(response.getContentAsString());
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+        String uri = "/api/users";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(SupervisorObj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        MockHttpServletResponse response1 = result1.getResponse();
+        assertEquals(HttpStatus.CREATED.value(), response1.getStatus());
 
     }
 
     ////////// Senario2: donner un user sans superviseur
     @Test
     public void Throw_exception_when_createUserWithoutSupervisor() throws Exception {
-
+        String NewUserObj = "{\n" +
+                "        \"firstName\": \"Amina\",\n" +
+                "        \"lastName\": \"Amina\",\n" +
+                "        \"username\": \"Amina\",\n" +
+                "        \"email\": \"Amina@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Manager\"\n" +
+                "        }\n" +
+                "       \n" +
+                "}\n" +
+                "             ";
         String uri = "/api/users";
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(NewUserObj)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceExistsException))
                 .andExpect(res -> assertEquals("You must insert the supervisor !!", res.getResolvedException().getMessage()))
+                .andReturn();
 
+
+    }
+
+    /////////////////////:Senario 3: creer un user avec un superviseur qui n'existe pas
+    @Test
+    public void Throw_NotFoundException_when_createUserWithUnexcitingSupervisor() throws Exception {
+        String NewUserObjWithUnexsistingSuperviror = "{\n" +
+                "        \"firstName\": \"Zineb\",\n" +
+                "        \"lastName\": \"Zineb\",\n" +
+                "        \"username\": \"Zineb\",\n" +
+                "        \"email\": \"Zineb@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Manager\"\n" +
+                "        },\n" +
+                "        \"supervisor\":{\"username\": \"Assala\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+        String uri = "/api/users";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObjWithUnexsistingSuperviror)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RessourceNotFoundException))
+                .andExpect(res -> assertEquals("Supervisor not found!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
+
+    /////////////////////:Senario 4: creer un user avec un superviseur existant
+    @Test
+    public void createUserWithExcitingSupervisor() throws Exception {
+        String NewUserObjWithSuperviror = "{\n" +
+                "        \"firstName\": \"Hala\",\n" +
+                "        \"lastName\": \"Hala\",\n" +
+                "        \"username\": \"Hala\",\n" +
+                "        \"email\": \"Hala@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Manager\"\n" +
+                "        },\n" +
+                "        \"supervisor\":{\"username\": \"Hamza\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+        String uri = "/api/users";
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObjWithSuperviror)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         MockHttpServletResponse response = result.getResponse();
-        //System.out.println(response.getStatus());
-        //assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+        String responseString = result.getResponse().getContentAsString();
+
+        JSONObject responsejson = new JSONObject(responseString);
+
+        System.out.println("this is the result " + responsejson);
 
 
     }
 
 
-    /*
-        @Test
-        public void createRole() throws Exception {
-            String url = "/api/roles";
+    /////////////////////:Senario 5: creer un user avec un role qui n'existe pas
+    @Test
+    public void Throw_NotFoundException_when_createUserWithUnexcitingRole() throws Exception {
+        String NewUserObjWithUnexsistingRole = "{\n" +
+                "        \"firstName\": \"Soufia\",\n" +
+                "        \"lastName\": \"Soufia\",\n" +
+                "        \"username\": \"Soufia\",\n" +
+                "        \"email\": \"Soufia@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Tester\"\n" +
+                "        },\n" +
+                "        \"supervisor\":{\"username\": \"Hamza\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+        String uri = "/api/users";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObjWithUnexsistingRole)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RoleNotExistException))
+                .andExpect(res -> assertEquals("Role does not exist !!", res.getResolvedException().getMessage()))
+                .andReturn();
 
-            MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(url)
-                    .content(NewRole)
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andReturn();
-            MockHttpServletResponse response = result.getResponse();
-            System.out.println(response.getContentAsString());
-            assertEquals(HttpStatus.CREATED.value(), response.getStatus());
+
+    }
+
+    /////////////////////:Senario 6: creer un user  sans un role
+    @Test
+    public void Throw_NotFoundException_when_createUserWithoutRole() throws Exception {
+        String NewUserObjWithUnexsistingRole = "{\n" +
+                "        \"firstName\": \"Salma\",\n" +
+                "        \"lastName\": \"Salma\",\n" +
+                "        \"username\": \"Salma\",\n" +
+                "        \"email\": \"Salma@gmail.com\",\n" +
+                "        \"supervisor\":{\"username\": \"Hamza\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+        String uri = "/api/users";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObjWithUnexsistingRole)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RoleNotExistException))
+                .andExpect(res -> assertEquals("You must insert the role!!", res.getResolvedException().getMessage()))
+                .andReturn();
 
 
-        }
-*/
+    }
+
+    /////////////////////:Senario 7: creer un user sans username
+    @Test
+    public void Throw_Exception_when_createUserWithoutUsername() throws Exception {
+        String NewUserObj = "{\n" +
+                "        \"firstName\": \"Houda\",\n" +
+                "        \"lastName\": \"Houda\",\n" +
+                "        \"email\": \"Houda@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Manager\"\n" +
+                "        },\n" +
+                "        \"supervisor\":{\n" +
+                "            \"username\": \"Hamza\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+
+        String uri = "/api/users";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof NullException))
+                .andExpect(res -> assertEquals("Username and email must be inserted!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
+
+    /////////////////////:Senario 8: creer un user avec username vide
+    @Test
+    public void Throw_Exception_when_createUserWithEmpltyUsername() throws Exception {
+        String NewUserObj = "{\n" +
+                "        \"firstName\": \"Alaa\",\n" +
+                "        \"lastName\": \"Alaa\",\n" +
+                "        \"username\": \"\",\n" +
+                "        \"email\": \"Alaa@gmail.com\",\n" +
+                "         \"role\": {\n" +
+                "            \"name\": \"Manager\"\n" +
+                "        },\n" +
+                "        \"supervisor\":{\n" +
+                "            \"username\": \"Hamza\"}\n" +
+                "       \n" +
+                "}\n" +
+                "            ";
+
+        String uri = "/api/users";
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(NewUserObj)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof NullException))
+                .andExpect(res -> assertEquals("Username and email must not be empty!!", res.getResolvedException().getMessage()))
+                .andReturn();
+
+
+    }
 
 
 }

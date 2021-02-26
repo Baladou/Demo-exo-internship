@@ -7,6 +7,7 @@ import com.exo.demo.dto.RoleDto;
 import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
+import com.exo.demo.exception.RoleNotFoundException;
 import com.exo.demo.model.Role;
 import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.RoleService;
@@ -53,7 +54,7 @@ public class RoleController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteRole(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
+    public void deleteRole(@PathVariable(value = "id") Long id) throws RoleNotFoundException {
 
         roleService.delete(id);
 

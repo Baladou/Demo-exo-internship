@@ -3,20 +3,12 @@ package com.exo.demo.service.impl;
 import com.exo.demo.dao.RoleDao;
 import com.exo.demo.dao.UserDao;
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.NullException;
-
-import com.exo.demo.exception.RessourceExistsException;
-import com.exo.demo.exception.RessourceNotFoundException;
-
-import com.exo.demo.exception.RoleNotFoundException;
+import com.exo.demo.exception.*;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
 import com.exo.demo.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -78,19 +70,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(long id, UserDto userDto) throws RessourceExistsException,
-            RessourceNotFoundException {
+            RessourceNotFoundException, RoleNotExistException, NothingIsUpdatedException {
         //trouver l'utilisateur pour le mettre à jour
         User user = userDao.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
-
+        UserDto OldUserDto = userMapper.toUserDto(user);
         ////tester s'il existe un autre utlisateur avec le meme username ou le meme email
         User Nuser = userDao.findByUsername(userDto.getUsername());
-        User Nuser2 = userDao.findByEmail(userDto.getUsername());
+        User Nuser2 = userDao.findByEmail(userDto.getEmail());
         if ((Nuser != null || Nuser2 != null) && Nuser != user && Nuser2 != user)
             throw new RessourceExistsException("Username or Email  already exist!!");
 
-        //////////tester si l'utilisateur demandé existe
-        if (user == null) throw new RessourceNotFoundException("User not found!!");
 
         /////////////tester si les champs insers si  ne sont t pas vides pour les mettre à jour
 
@@ -114,18 +104,24 @@ public class UserServiceImpl implements UserService {
             User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
             if (supervisor != null) {
                 user.setSupervisor(supervisor);
+            } else {
+                throw new RessourceExistsException("Supervisor inserted does not exist!!");
             }
         }
         //cherecher le role
         if (userDto.getRole() != null) {
-            Role role = roleDao.findByName(userDto.getRole().getName());
+            Role role = roleDao.findByName(userDto.getRole().getName().toLowerCase());
             if (role != null) {
                 user.setRole(role);
             } else {
-                throw new RessourceExistsException("Role inserted does not exist");
+                throw new RoleNotExistException("Role inserted does not exist!!");
             }
         }
 
+        if (OldUserDto.equals(userMapper.toUserDto(user))) {
+            System.out.println(OldUserDto.equals(userMapper.toUserDto(user)));
+            throw new NothingIsUpdatedException("We didn't do any update, verify your request body!!");
+        }
         /////////enregistrere les modifications
         userDao.save(user);
         userDto.setUserId(userDao.save(user).getUserId());
@@ -135,7 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotFoundException {
+    public UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotExistException {
 
 ///////////// tester si username ou l'email sont vides
         if (userDto.getUsername() == null || userDto.getEmail() == null)
@@ -164,10 +160,10 @@ public class UserServiceImpl implements UserService {
         if (userDto.getRole() != null) {
             Role role = roleDao.findByName(userDto.getRole().getName().toLowerCase());
 
-            if (role == null) throw new RoleNotFoundException("role does not exist !!");
+            if (role == null) throw new RoleNotExistException("Role does not exist !!");
             user.setRole(role);
         } else {
-            throw new RessourceExistsException("You must insert the role!!");
+            throw new RoleNotExistException("You must insert the role!!");
         }
         ///////// trouver le superviseur affecté à l'utilisateur
 
@@ -175,7 +171,7 @@ public class UserServiceImpl implements UserService {
             User supervisor = userDao.findByUsername(userDto.getSupervisor().getUsername());
             if (supervisor == null && !userDto.getRole().getName().toLowerCase().equals("directeur")) {
 
-                throw new RessourceExistsException("the supervisor must not be empty !!");
+                throw new RessourceNotFoundException("Supervisor not found!!");
             } else {
                 user.setSupervisor(supervisor);
             }

@@ -64,7 +64,7 @@ class H2ConfigProfileTest {
 
     private Properties createHibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("javax.persistence.schema-generation.database.action", "update");
+        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
         properties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         return properties;
@@ -73,6 +73,7 @@ class H2ConfigProfileTest {
     @Bean
     @Profile("test")
     PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+
         return new JpaTransactionManager(emf);
     }
 

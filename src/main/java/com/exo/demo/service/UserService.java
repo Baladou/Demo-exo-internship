@@ -2,11 +2,7 @@ package com.exo.demo.service;
 
 
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.NullException;
-import com.exo.demo.exception.RessourceNotFoundException;
-import com.exo.demo.exception.RessourceExistsException;
-import com.exo.demo.exception.RoleNotFoundException;
-
+import com.exo.demo.exception.*;
 
 import java.util.List;
 
@@ -47,19 +43,18 @@ public interface UserService {
     void delete(long id) throws RessourceNotFoundException;
 
     /**
-     * @param username
      * @param userDto
      * @return
      * @throws RessourceNotFoundException
      * @throws RessourceExistsException
      */
-    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException;
+    UserDto update(long id, UserDto userDto) throws RessourceNotFoundException, RessourceExistsException, RoleNotExistException, NothingIsUpdatedException;
 
     /**
      * @param userDto
      * @return
      * @throws RessourceExistsException
      */
-    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotFoundException;
+    UserDto createUser(UserDto userDto) throws RessourceExistsException, NullException, RessourceNotFoundException, RoleNotExistException;
 
 }

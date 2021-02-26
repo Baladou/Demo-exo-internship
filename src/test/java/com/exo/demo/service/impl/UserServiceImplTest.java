@@ -8,18 +8,16 @@ import com.exo.demo.dto.UserDto;
 import com.exo.demo.exception.NullException;
 import com.exo.demo.exception.RessourceExistsException;
 import com.exo.demo.exception.RessourceNotFoundException;
-import com.exo.demo.exception.RoleNotFoundException;
+import com.exo.demo.exception.RoleNotExistException;
 import com.exo.demo.mapper.RoleMapper;
 import com.exo.demo.mapper.UserMapper;
 import com.exo.demo.model.Role;
 import com.exo.demo.model.User;
 import com.exo.demo.service.UserService;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +26,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
 
 import static org.junit.Assert.assertEquals;
 
@@ -64,9 +60,7 @@ class UserServiceImplTest {
         List<User> list = new ArrayList<User>();
         UserDto user1 = new UserDto("Ahmed", "Ahmed", "Ahmed",
                 "Ahmed@gmail.com", new RoleDto("Directeur"));
-
         list.add(userMapper.toUser(user1));
-
         Mockito.when(userDao.findAll()).thenReturn(list);
 
         //test
@@ -152,7 +146,7 @@ class UserServiceImplTest {
 
     //////////sénario 1: creer un directeur sans superviceur
     @Test
-    void createUser() throws NullException, RessourceExistsException, RessourceNotFoundException, RoleNotFoundException {
+    void createUser() throws NullException, RessourceExistsException, RessourceNotFoundException, RoleNotExistException {
 
         UserDto NewuserObj = new UserDto("Ahmed", "Ahmed", "Ahmed",
                 "Ahmed@gmail.com", new RoleDto("directeur"));
@@ -175,7 +169,7 @@ class UserServiceImplTest {
         Assertions.assertThrows(RessourceExistsException.class,
                 () -> {
                     UserDto NewuserObj = new UserDto("Hamza", "Ahmed", "Hamza",
-                            "Ahmed@gmail.com", new RoleDto(20, "directeur"));
+                            "Ahmed@gmail.com", new RoleDto("directeur"));
                     RoleDto roleDto = new RoleDto("Directeur");
                     Role role = roleMapper.toRole(roleDto);
                     Mockito.when(roleDao.findByName(Mockito.anyString())).thenReturn(role);
