@@ -30,10 +30,8 @@ import static org.junit.Assert.assertTrue;
         H2ConfigProfileTest.class})
 
 @ActiveProfiles("test")
-public class DeleteE2ETest {
-    @Autowired
-    private MockMvc mockMvc;
 
+public class DeleteE2ETest {
     String SupervisorObj = "{\n" +
             "        \"firstName\": \"Hamza\",\n" +
             "        \"lastName\": \"Hamza\",\n" +
@@ -56,7 +54,6 @@ public class DeleteE2ETest {
     String NewRole2 = "{\n" +
             "    \"name\": \"developper\"\n" +
             "}";
-
     String NewUserObjWithSuperviror = "{\n" +
             "        \"firstName\": \"Hala\",\n" +
             "        \"lastName\": \"Hala\",\n" +
@@ -69,6 +66,8 @@ public class DeleteE2ETest {
             "       \n" +
             "}\n" +
             "            ";
+    @Autowired
+    private MockMvc mockMvc;
 
     @Before
     public void createRoleDirecteorAndSupervirorAndUsetToDelete() throws Exception {
@@ -114,7 +113,7 @@ public class DeleteE2ETest {
 
     @Test
     public void deleteUserById() throws Exception {
-        String uri = "/api/users/4";
+        String uri = "/api/users/5";
         MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.delete(uri)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -145,7 +144,7 @@ public class DeleteE2ETest {
                 .andExpect(res -> assertEquals("Role  not found for the id: 6", res.getResolvedException().getMessage()))
                 .andExpect(status().isBadRequest())
                 .andReturn();
-        
+
 
     }
 
@@ -164,8 +163,21 @@ public class DeleteE2ETest {
     }
 
     @Test
-    public void getRoles() throws Exception {
+    public void ThrowException_When_deleteSupervisorById() throws Exception {
+        String uri = "/api/users/2";
+        MvcResult result1 = mockMvc.perform(MockMvcRequestBuilders.delete(uri)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(res -> assertTrue(res.getResolvedException() instanceof RoleNotFoundException))
+                .andExpect(res -> assertEquals("You can not delete this role because it is used by other ressources!!", res.getResolvedException().getMessage()))
+                .andReturn();
+        MockHttpServletResponse response1 = result1.getResponse();
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response1.getStatus());
 
+
+    }
+
+    @Test
+    public void getRoles() throws Exception {
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
                 "/api/roles/").accept(

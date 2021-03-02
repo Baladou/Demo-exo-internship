@@ -65,10 +65,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(long id) throws RessourceNotFoundException {
         User user = userDao.findById(id).orElseThrow(() -> new RessourceNotFoundException("User record not found for the id: " + id));
+
         userDao.deleteById(id);
     }
 
     @Override
+    
     public UserDto update(long id, UserDto userDto) throws RessourceExistsException,
             RessourceNotFoundException, RoleNotExistException, NothingIsUpdatedException {
         //trouver l'utilisateur pour le mettre à jour

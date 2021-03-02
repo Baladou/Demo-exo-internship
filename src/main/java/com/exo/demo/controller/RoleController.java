@@ -27,13 +27,13 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<Role> createRole(@RequestBody Role role) throws Exception {
 
         return new ResponseEntity<Role>(roleService.createRole(role), HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<RoleDto>> listRoles() {
 

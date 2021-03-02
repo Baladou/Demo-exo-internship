@@ -29,14 +29,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) throws Exception {
         System.out.println("user");
         return new ResponseEntity<UserDto>(userService.createUser(user), HttpStatus.CREATED);
     }
 
-
+    @CrossOrigin
     @GetMapping
     public ApiResponse listUsers() {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.getUsers());
