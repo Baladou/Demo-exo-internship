@@ -70,7 +70,7 @@ public class RoleController {
             roleService.delete(id);
             ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name());
         } catch (RoleNotFoundException e) {
-            ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), e);
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, UserController.Status.FAILED.name(), e);
         }
         return ap;
     }
