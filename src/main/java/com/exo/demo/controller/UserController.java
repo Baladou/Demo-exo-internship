@@ -12,7 +12,6 @@ import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -31,9 +30,14 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) throws Exception {
-        System.out.println("user");
-        return new ResponseEntity<UserDto>(userService.createUser(user), HttpStatus.CREATED);
+    public ApiResponse createUser(@RequestBody UserDto user) {
+        ApiResponse ap = new ApiResponse();
+        try {
+            ap = new ApiResponse(HttpStatus.CREATED, Status.SUCCESS.name(), userService.createUser(user));
+        } catch (Exception e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, Status.FAILED.name(), e);
+        }
+        return ap;
     }
 
     @CrossOrigin

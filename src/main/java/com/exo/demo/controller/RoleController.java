@@ -29,10 +29,17 @@ public class RoleController {
 
     @CrossOrigin
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody Role role) throws Exception {
+    public ApiResponse createRole(@RequestBody Role role) throws Exception {
 
-        return new ResponseEntity<Role>(roleService.createRole(role), HttpStatus.CREATED);
+        ApiResponse ap = new ApiResponse();
+        try {
+            ap = new ApiResponse(HttpStatus.CREATED, UserController.Status.SUCCESS.name(), roleService.createRole(role));
+        } catch (Exception e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, UserController.Status.FAILED.name(), e);
+        }
+        return ap;
     }
+
     @CrossOrigin
     @GetMapping
     public ResponseEntity<List<RoleDto>> listRoles() {
@@ -41,25 +48,34 @@ public class RoleController {
         return new ResponseEntity<List<RoleDto>>(roleService.getRoles(), HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/{id}")
     public RoleDto getRole(@PathVariable long id) throws RessourceNotFoundException {
 
         return roleService.findOneRole(id);
     }
 
+    @CrossOrigin
     @GetMapping(value = "/{id}/users")
     public ApiResponse getUsersRole(@PathVariable long id) throws RessourceNotFoundException {
 
         return new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), roleService.getUsersRole(id));
     }
 
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public void deleteRole(@PathVariable(value = "id") Long id) throws RoleNotFoundException {
-
-        roleService.delete(id);
-
+    public ApiResponse deleteRole(@PathVariable(value = "id") Long id) {
+        ApiResponse ap = new ApiResponse();
+        try {
+            roleService.delete(id);
+            ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name());
+        } catch (RoleNotFoundException e) {
+            ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), e);
+        }
+        return ap;
     }
 
+    @CrossOrigin
     @PutMapping(value = "/{id}")
     public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody RoleDto roledto) throws RessourceNotFoundException, RessourceExistsException {
 

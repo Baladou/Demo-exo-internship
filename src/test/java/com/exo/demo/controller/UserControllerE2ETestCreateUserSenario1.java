@@ -92,7 +92,7 @@ public class UserControllerE2ETestCreateUserSenario1 {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         MockHttpServletResponse response1 = result1.getResponse();
-        assertEquals(HttpStatus.CREATED.value(), response1.getStatus());
+        assertEquals(200, response1.getStatus());
 
     }
 
