@@ -4,10 +4,7 @@
 package com.exo.demo.controller;
 
 import com.exo.demo.dto.UserDto;
-import com.exo.demo.exception.NothingIsUpdatedException;
-import com.exo.demo.exception.RessourceExistsException;
-import com.exo.demo.exception.RessourceNotFoundException;
-import com.exo.demo.exception.RoleNotExistException;
+import com.exo.demo.exception.*;
 import com.exo.demo.response.ApiResponse;
 import com.exo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +49,17 @@ public class UserController {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.findOne(id));
     }
 
+    @CrossOrigin
     @DeleteMapping(value = "/{id}")
-    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) throws RessourceNotFoundException {
-        userService.delete(id);
-        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name());
+    public ApiResponse deleteUsers(@PathVariable(value = "id") Long id) {
+        ApiResponse ap = new ApiResponse();
+        try {
+            userService.delete(id);
+            ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name());
+        } catch (RessourceNotFoundException e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, UserController.Status.FAILED.name(), e);
+        }
+        return ap;
 
     }
 
