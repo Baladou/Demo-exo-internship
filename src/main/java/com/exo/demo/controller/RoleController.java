@@ -77,9 +77,16 @@ public class RoleController {
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody RoleDto roledto) throws RessourceNotFoundException, RessourceExistsException {
+    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody RoleDto roledto) {
 
-        return new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), roleService.update(id, roledto));
+        ApiResponse ap = new ApiResponse();
+        try {
+
+            ap = new ApiResponse(HttpStatus.OK, UserController.Status.SUCCESS.name(), roleService.update(id, roledto));
+        } catch (RessourceNotFoundException | RessourceExistsException e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, UserController.Status.FAILED.name(), e);
+        }
+        return ap;
     }
 
 
