@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    
+
     public UserDto update(long id, UserDto userDto) throws RessourceExistsException,
             RessourceNotFoundException, RoleNotExistException, NothingIsUpdatedException {
         //trouver l'utilisateur pour le mettre à jour
@@ -80,9 +80,12 @@ public class UserServiceImpl implements UserService {
         ////tester s'il existe un autre utlisateur avec le meme username ou le meme email
         User Nuser = userDao.findByUsername(userDto.getUsername());
         User Nuser2 = userDao.findByEmail(userDto.getEmail());
-        if ((Nuser != null || Nuser2 != null) && Nuser != user && Nuser2 != user)
-            throw new RessourceExistsException("Username or Email  already exist!!");
-
+        if (Nuser != null && Nuser != user) {
+            throw new RessourceExistsException("Username already exist!!");
+        }
+        if (Nuser2 != null && Nuser2 != user) {
+            throw new RessourceExistsException("Email already exist!!");
+        }
 
         /////////////tester si les champs insers si  ne sont t pas vides pour les mettre à jour
 

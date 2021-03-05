@@ -63,13 +63,22 @@ public class UserController {
 
     }
 
+    @CrossOrigin
     @PutMapping(value = "/{id}")
-    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody UserDto user) throws RessourceNotFoundException, RessourceExistsException, RoleNotExistException, NothingIsUpdatedException {
+    public ApiResponse update(@PathVariable(value = "id") long id, @RequestBody UserDto user) {
 
-        return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.update(id, user));
+        ApiResponse ap = new ApiResponse();
+        try {
+            ap = new ApiResponse(HttpStatus.NO_CONTENT, Status.SUCCESS.name(), userService.update(id, user));
+        } catch (RessourceExistsException e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, Status.FAILED.name(), e);
+        } catch (Exception e) {
+            ap = new ApiResponse(HttpStatus.BAD_REQUEST, Status.FAILED.name(), e);
+        }
+        return ap;
     }
 
-
+    @CrossOrigin
     @GetMapping("/search")
     public ApiResponse listUsersByFirstName(@RequestParam(value = "firstName") String firstname) {
         return new ApiResponse(HttpStatus.OK, Status.SUCCESS.name(), userService.getUsersByFirstNameLike(firstname));
